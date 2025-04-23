@@ -5,3 +5,6 @@ node = "lts"
 "npm:@antfu/ni" = "latest"
 "npm:npm-check-updates" = "latest"
 "npm:pnpm" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
