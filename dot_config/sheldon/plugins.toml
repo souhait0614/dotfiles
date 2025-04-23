@@ -39,3 +39,12 @@ inline = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
 
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
+
+[plugins.mise]
+inline = '''
+eval "$(mise activate zsh)"
+path=(
+  ${HOME}/.local/share/mise/shims(N-/)
+  $path
+)
+'''

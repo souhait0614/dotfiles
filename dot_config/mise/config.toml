@@ -1,0 +1,7 @@
+[tools]
+bun = "latest"
+deno = "latest"
+node = "lts"
+"npm:@antfu/ni" = "latest"
+"npm:npm-check-updates" = "latest"
+"npm:pnpm" = "latest"
