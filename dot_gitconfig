@@ -1,0 +1,7 @@
+[gpg]
+        format = ssh
+
+[user]
+	name = souhait
+	email = souhait.0614@gmail.com
+        signingkey = ~/.ssh/souhait

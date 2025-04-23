@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# path
+path=(
+  ${HOME}/.local/bin(N-/)
+  /usr/local/sbin(N-/)
+  /usr/local/bin(N-/)
+  /opt/homebrew/bin(N-/)
+  $path
+)
