@@ -1,0 +1,16 @@
+name: Dotfiles CI
+on:
+  push:
+
+jobs:
+  apply_test:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-apply_test
+      cancel-in-progress: true
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run chezmoi apply
+        run: sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply -v ${{ github.repository_owner }}
