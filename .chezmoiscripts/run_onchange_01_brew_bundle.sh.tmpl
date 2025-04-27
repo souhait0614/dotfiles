@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# dot_Brewfile hash: {{ include "dot_Brewfile" | sha256sum }}
+{{ if eq .chezmoi.os "darwin" -}}
+echo "Homebrewでパッケージをインストールまたはアップデートします..."
+brew bundle --file="$HOME/.Brewfile" --force
+echo "不要なHomebrewパッケージをクリーンアップします..."
+brew bundle cleanup --file="$HOME/.Brewfile" --force
+{{ end -}}

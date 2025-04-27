@@ -1,0 +1,12 @@
+#!/bin/sh
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+if ! command -v brew &> /dev/null; then
+    echo "Homebrewがインストールされていません。Homebrewをインストールします..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo "Homebrewのインストールが完了しました。"
+else
+    echo "Homebrewは既にインストールされています。"
+fi
+{{ end -}}
