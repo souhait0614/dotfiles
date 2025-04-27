@@ -6,6 +6,7 @@
 {{ if eq (env "CI") "true" -}}
 echo "CI環境ではmasでのインストールをスキップします"
 MAS_APPS="$(cat $HOME/.Brewfile | grep -v brew | grep mas | sed 's/^.*"\(.*\)".*$/\1/' | tr '\n' ' ')"
+echo "スキップするアプリ: $MAS_APPS"
 export HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS"
 {{ end -}}
 
