@@ -13,7 +13,7 @@
 shell = "zsh"
 
 [templates]
-defer = "{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}"
+defer = "{% for file in files %}zsh-defer source {{ `\"{{ file }}\"` }}\n{% endfor %}"
 
 [plugins]
 
@@ -34,9 +34,6 @@ github = "marlonrichert/zsh-autocomplete"
 github = "zsh-users/zsh-completions"
 apply = ["defer"]
 
-[plugins.homebrew]
-inline = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
 
@@ -48,3 +45,8 @@ path=(
   $path
 )
 '''
+
+{{ if eq .chezmoi.os "darwin" -}}
+[plugins.homebrew]
+inline = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+{{ end -}}
