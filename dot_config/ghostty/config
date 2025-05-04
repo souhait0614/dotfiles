@@ -9,3 +9,8 @@ font-feature = "-liga"
 
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
+
+quick-terminal-position = "top"
+quick-terminal-screen = "main"
+quick-terminal-animation-duration = 0.15
+keybind = "global:cmd+shift+t=toggle_quick_terminal"
