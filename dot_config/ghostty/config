@@ -1,6 +1,11 @@
 theme = tokyonight
-font-family = "PlemolJP Console NF"
 background-opacity = 0.85
 background-blur-radius = 50
+
+font-family = "PlemolJP Console NF"
+font-feature = "-calt"
+font-feature = "-dlig"
+font-feature = "-liga"
+
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
