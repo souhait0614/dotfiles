@@ -9,3 +9,7 @@
 ```sh
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
 ```
+
+## :miteru_sakananoonigiri:
+
+[cffnpwr/dotfiles](https://github.com/cffnpwr/dotfiles)
