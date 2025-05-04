@@ -14,7 +14,9 @@ path=(
   ${HOME}/.local/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/local/bin(N-/)
+  {{ if eq .chezmoi.os "darwin" -}}
   /opt/homebrew/bin(N-/)
+  {{ end -}}
   $path
 )
 
@@ -70,3 +72,8 @@ setopt list_packed
 setopt no_beep
 # ファイル種別起動を補完候補の末尾に表示しない
 unsetopt list_types
+
+{{ if eq .chezmoi.os "darwin" -}}
+# SSH Agent
+export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+{{ end -}}
