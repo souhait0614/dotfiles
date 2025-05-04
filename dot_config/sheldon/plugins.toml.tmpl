@@ -46,6 +46,10 @@ path=(
 )
 '''
 
+[plugins.local-plugins]
+local = "~/.config/zsh/plugins/"
+apply = ["defer"]
+
 {{ if eq .chezmoi.os "darwin" -}}
 [plugins.homebrew]
 inline = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
