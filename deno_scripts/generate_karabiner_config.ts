@@ -1,29 +1,21 @@
 import * as k from "https://deno.land/x/karabinerts@1.31.0/deno.ts";
 import * as fs from "jsr:@std/fs";
 
-const defaultProfileName = "Default";
-const baseConfig = {
-  "profiles": [
-    {
-      "name": defaultProfileName,
-      "selected": true,
-      "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" },
-    },
-  ],
-} as const;
-
-const rules = [
-  k.rule("Change caps lock to control").manipulators([
+const changeCapsLockToControl = k.rule("Change caps lock to control")
+  .manipulators([
     k.map({ key_code: "caps_lock" })
       .to({ key_code: "left_control" })
       .toIfAlone({ key_code: "caps_lock" }),
-  ]),
-  k.rule("Change fn to command").manipulators([
-    k.map({ key_code: "fn" })
-      .to({ key_code: "left_command" })
-      .toIfAlone({ key_code: "fn" }),
-  ]),
-  k.rule("Tap command to toggle Kana/Eisuu").manipulators([
+  ]);
+
+const changeFnToCommand = k.rule("Change fn to command").manipulators([
+  k.map({ key_code: "fn" })
+    .to({ key_code: "left_command" })
+    .toIfAlone({ key_code: "fn" }),
+]);
+
+const tapCommandToToggleKanaEisuu = k.rule("Tap command to toggle Kana/Eisuu")
+  .manipulators([
     k.withMapper(
       {
         "left_command": "japanese_eisuu",
@@ -36,7 +28,23 @@ const rules = [
         .description(`Tap ${command} alone to switch to ${lang}`)
         .parameters({ "basic.to_if_held_down_threshold_milliseconds": 100 })
     ),
-  ]),
+  ]);
+
+const defaultProfileName = "Default";
+const baseConfig = {
+  "profiles": [
+    {
+      "name": defaultProfileName,
+      "selected": true,
+      "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" },
+    },
+  ],
+} as const;
+
+const rules = [
+  changeCapsLockToControl,
+  changeFnToCommand,
+  tapCommandToToggleKanaEisuu,
 ];
 
 const configFilePath = Deno.env.get("HOME") +
