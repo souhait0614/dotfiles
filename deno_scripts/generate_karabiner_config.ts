@@ -3,15 +3,13 @@ import * as fs from "jsr:@std/fs";
 
 const changeCapsLockToControl = k.rule("Change caps lock to control")
   .manipulators([
-    k.map({ key_code: "caps_lock" })
-      .to({ key_code: "left_control" })
-      .toIfAlone({ key_code: "caps_lock" }),
+    k.map({ key_code: "caps_lock", modifiers: { optional: ["any"] } })
+      .to({ key_code: "left_control" }),
   ]);
 
 const changeFnToCommand = k.rule("Change fn to command").manipulators([
-  k.map({ key_code: "fn" })
-    .to({ key_code: "left_command" })
-    .toIfAlone({ key_code: "fn" }),
+  k.map({ key_code: "fn", modifiers: { optional: ["any"] } })
+    .to({ key_code: "left_command" }),
 ]);
 
 const tapCommandToToggleKanaEisuu = k.rule("Tap command to toggle Kana/Eisuu")
