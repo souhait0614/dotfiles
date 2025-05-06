@@ -34,6 +34,10 @@ github = "marlonrichert/zsh-autocomplete"
 github = "zsh-users/zsh-completions"
 apply = ["defer"]
 
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+apply = ["defer"]
+
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
 
@@ -45,6 +49,12 @@ path=(
   $path
 )
 '''
+
+[plugins.compinit]
+inline = """
+autoload -Uz compinit
+zsh-defer -a -t0.01 compinit -d "$XDG_STATE_HOME/zsh/zcompdump"
+"""
 
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
