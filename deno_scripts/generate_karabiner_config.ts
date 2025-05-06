@@ -28,6 +28,12 @@ const tapCommandToToggleKanaEisuu = k.rule("Tap command to toggle Kana/Eisuu")
     ),
   ]);
 
+const quitRequireDoubleTap = k.rule("Quit require double tap").manipulators([
+  k.mapDoubleTap("q", "command")
+    .to("q", "command")
+    .singleTap(null),
+]);
+
 const defaultProfileName = "Default";
 const baseConfig = {
   "profiles": [
@@ -43,6 +49,7 @@ const rules = [
   changeCapsLockToControl,
   changeFnToCommand,
   tapCommandToToggleKanaEisuu,
+  quitRequireDoubleTap,
 ];
 
 const configFilePath = Deno.env.get("HOME") +
