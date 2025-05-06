@@ -1,6 +1,7 @@
 theme = tokyonight
 background-opacity = 0.85
 background-blur-radius = 50
+maximize = true
 
 font-family = "PlemolJP Console NF"
 font-feature = "-calt"
