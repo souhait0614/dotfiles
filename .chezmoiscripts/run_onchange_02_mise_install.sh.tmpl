@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# dot_config/mise/config.toml hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+mise install
+
+# pnpm command completion
+# if which pnpm > /dev/null; then
+#   if [ ! -d ~/.config/zsh/site-functions/ ]; then
+#     mkdir -p ~/.config/zsh/site-functions
+#   fi
+#   pnpm completion zsh > ~/.config/zsh/site-functions/_pnpm
+# fi
+
+# deno command completion
+if which deno > /dev/null; then
+  if [ ! -d ~/.config/zsh/site-functions/ ]; then
+    mkdir -p ~/.config/zsh/site-functions
+  fi
+  deno completions zsh > ~/.config/zsh/site-functions/_deno
+fi
+
+# @antfu/ni command completion
+if which ni > /dev/null; then
+  if [ ! -d ~/.config/zsh/site-functions/ ]; then
+    mkdir -p ~/.config/zsh/site-functions
+  fi
+  curl -o ~/.config/zsh/site-functions/_ni https://raw.githubusercontent.com/snowsman/ni-completion/main/.ni.zsh
+fi
+
+{{ end -}}

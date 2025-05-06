@@ -4,6 +4,6 @@
 {{ if eq .chezmoi.os "darwin" -}}
 
 echo "Karabiner-Elementsの設定を生成します..."
-mise exec deno@latest -- deno run --allow-read --allow-write --allow-env {{ joinPath .chezmoi.sourceDir "deno_scripts/generate_karabiner_config.ts" | quote }}
+deno run --allow-read --allow-write --allow-env {{ joinPath .chezmoi.sourceDir "deno_scripts/generate_karabiner_config.ts" | quote }}
 
 {{ end -}}
