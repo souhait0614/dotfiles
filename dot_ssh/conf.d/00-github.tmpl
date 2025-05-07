@@ -1,5 +1,7 @@
 Host github
   Hostname github.com
   User git
+  {{ if eq .chezmoi.os "darwin" -}}
   AddKeysToAgent yes
   UseKeychain yes
+  {{ end -}}
