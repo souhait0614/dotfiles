@@ -8,10 +8,12 @@ font-feature = "-calt"
 font-feature = "-dlig"
 font-feature = "-liga"
 
+{{ if eq .chezmoi.os "darwin" -}}
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
+{{ end -}}
 
 quick-terminal-position = "top"
 quick-terminal-screen = "main"
 quick-terminal-animation-duration = 0.15
-keybind = "global:cmd+shift+t=toggle_quick_terminal"
+keybind = "global:super+shift+t=toggle_quick_terminal"

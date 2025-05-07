@@ -64,7 +64,11 @@ apply = ["defer"]
 local = "~/.config/zsh/site-functions/"
 apply = ["defer", "fpath"]
 
-{{ if eq .chezmoi.os "darwin" -}}
 [plugins.homebrew]
+{{ if eq .chezmoi.os "darwin" -}}
 inline = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+{{ end -}}
+
+{{ if eq .chezmoi.os "linux" -}}
+inline = 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
 {{ end -}}

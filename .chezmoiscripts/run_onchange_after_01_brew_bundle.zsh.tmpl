@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+# dot_Brewfile_macos hash: {{ include "dot_Brewfile_macos" | sha256sum }}
+{{ if eq .chezmoi.os "darwin" -}}
+
+{{ if eq (env "CI") "true" -}}
+echo "CI環境ではmasでのインストールをスキップします"
+MAS_APPS="$(cat $HOME/.Brewfile_macos | grep -v brew | grep mas | sed 's/^.*"\(.*\)".*$/\1/' | tr '\n' ' ')"
+echo "スキップするアプリ: $MAS_APPS"
+export HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS"
+{{ end -}}
+
+echo "Homebrewでパッケージをインストールまたはアップデートします..."
+brew bundle --file="$HOME/.Brewfile_macos" --force
+echo "不要なHomebrewパッケージをクリーンアップします..."
+brew bundle cleanup --file="$HOME/.Brewfile_macos" --force
+{{ end -}}
+
+# dot_Brewfile_linux hash: {{ include "dot_Brewfile_linux" | sha256sum }}
+{{ if eq .chezmoi.os "linux" -}}
+echo "Homebrewでパッケージをインストールまたはアップデートします..."
+brew bundle --file="$HOME/.Brewfile_linux" --force
+echo "不要なHomebrewパッケージをクリーンアップします..."
+brew bundle cleanup --file="$HOME/.Brewfile_linux" --force
+{{ end -}}
