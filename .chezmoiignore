@@ -9,3 +9,7 @@
 {{ if ne .chezmoi.os "linux" -}}
 .Brewfile_linux
 {{ end -}}
+
+{{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+.ssh
+{{ end -}}
