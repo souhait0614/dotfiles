@@ -1,5 +1,10 @@
 import * as k from "https://deno.land/x/karabinerts@1.31.0/deno.ts";
 import * as fs from "jsr:@std/fs";
+import baseConfig from "./base_config.json" with { type: "json" };
+
+const DEFAULT_PROFILE_NAME = "Default";
+const CONFIG_FILE_PATH = Deno.env.get("HOME") +
+  "/.config/karabiner/karabiner.json";
 
 const changeCapsLockToControl = k.rule("Change caps lock to control")
   .manipulators([
@@ -34,17 +39,6 @@ const quitRequireDoubleTap = k.rule("Quit require double tap").manipulators([
     .singleTap(null),
 ]);
 
-const defaultProfileName = "Default";
-const baseConfig = {
-  "profiles": [
-    {
-      "name": defaultProfileName,
-      "selected": true,
-      "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" },
-    },
-  ],
-} as const;
-
 const rules = [
   changeCapsLockToControl,
   changeFnToCommand,
@@ -52,16 +46,13 @@ const rules = [
   quitRequireDoubleTap,
 ];
 
-const configFilePath = Deno.env.get("HOME") +
-  "/.config/karabiner/karabiner.json";
-
-fs.existsSync(configFilePath) && Deno.removeSync(configFilePath);
-fs.ensureFileSync(configFilePath);
-Deno.writeTextFileSync(configFilePath, JSON.stringify(baseConfig), {
+fs.existsSync(CONFIG_FILE_PATH) && Deno.removeSync(CONFIG_FILE_PATH);
+fs.ensureFileSync(CONFIG_FILE_PATH);
+Deno.writeTextFileSync(CONFIG_FILE_PATH, JSON.stringify(baseConfig), {
   create: false,
 });
 
 k.writeToProfile({
-  name: defaultProfileName,
-  karabinerJsonPath: configFilePath,
+  name: DEFAULT_PROFILE_NAME,
+  karabinerJsonPath: CONFIG_FILE_PATH,
 }, rules);
