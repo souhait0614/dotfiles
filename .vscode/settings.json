@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "*.sh.tmpl": "shellscript",
+    "*.zsh.tmpl": "shellscript",
     "*.toml.tmpl": "toml",
   },
   "deno.enable": true,
