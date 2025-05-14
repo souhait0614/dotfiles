@@ -39,10 +39,10 @@ export GIT_EDITOR="${EDITOR}"
 # 履歴ファイルの保存先
 export HISTFILE=${ZDOTDIR}/.zsh_history
 # メモリに保存される履歴の件数
-export HISTSIZE=100
+export HISTSIZE=1000
 # 履歴ファイルに保存される履歴の件数
-export SAVEHIST=10000
-export HISTFILESIZE=10000
+export SAVEHIST=100000
+export HISTFILESIZE=100000
 # 重複を記録しない
 setopt hist_ignore_dups
 # 開始と終了を記録
@@ -66,7 +66,7 @@ setopt share_history
 
 # other
 # zshの補完候補が画面から溢れ出る時、それでも表示するか確認
-export LISTMAX=50
+export LISTMAX=100
 # バックグラウンドジョブの優先度(ionice)をbashと同じ挙動に
 unsetopt bg_nice
 # 補完候補を詰めて表示
