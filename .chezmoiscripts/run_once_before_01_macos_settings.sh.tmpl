@@ -1,0 +1,29 @@
+#!/bin/sh
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+echo "macOSの設定を行います..."
+
+# Finderの設定
+# 隠しファイルを表示
+defaults write com.apple.finder AppleShowAllFiles true
+# リスト表示
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# パスバーを表示
+defaults write com.apple.finder ShowPathbar -bool true
+# ステータスバーを表示
+defaults write com.apple.finder ShowStatusBar -bool true
+# 拡張子を表示
+defaults write NSGlobalDomain AppleShowAllFiles true
+
+# .DS_Storeを作らないようにする
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+defaults write com.apple.desktopservices DSDontWriteUSBStores true
+
+# .DS_Storeを全削除
+find ~ -name ".DS_Store" -type f -delete
+
+# Finderを再起動
+killall Finder
+
+{{ end -}}
