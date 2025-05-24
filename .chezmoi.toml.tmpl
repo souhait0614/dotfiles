@@ -1,0 +1,22 @@
+{{ $github_username := "" -}}
+{{ $git_user_name := "" -}}
+{{ $git_user_email := "" -}}
+{{ $git_use_gpgsign := false -}}
+
+{{ if stdinIsATTY -}}
+  {{ $github_username = promptStringOnce . "github_username" "Enter your GitHub username" -}}
+  {{ $git_user_name = promptStringOnce . "git_user_name" "Enter your Git user.name" -}}
+  {{ $git_user_email = promptStringOnce . "git_user_email" "Enter your Git user.email" -}}
+  {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits?" -}}
+{{ else -}}
+  {{ $github_username = "github-actions[bot]" -}}
+  {{ $git_user_name = "github-actions[bot]" -}}
+  {{ $git_user_email = "41898282+github-actions[bot]@users.noreply.github.com" -}}
+  {{ $git_use_gpgsign = false -}}
+{{ end -}}
+
+[data]
+  github_username = {{ $github_username | quote }}
+  git_user_name = {{ $git_user_name | quote }}
+  git_user_email = {{ $git_user_email | quote }}
+  git_use_gpgsign = {{ $git_use_gpgsign | quote }}

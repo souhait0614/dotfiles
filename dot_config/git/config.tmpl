@@ -1,0 +1,12 @@
+[commit]
+    gpgsign = {{ .git_use_gpgsign }}
+{{ if .git_use_gpgsign -}}
+[gpg]
+    format = ssh
+{{ end -}}
+[user]
+    name = {{ .git_user_name }}
+    email = {{ .git_user_email }}
+    {{ if .git_use_gpgsign -}}
+    signingkey = ~/.ssh/identity.pub
+    {{ end -}}
