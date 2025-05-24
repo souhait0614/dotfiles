@@ -23,5 +23,5 @@ brew bundle dump --file="$(chezmoi source-path)/dot_Brewfile_macos" --no-vscode 
 
 ## :miteru_sakananoonigiri:
 
-[cffnpwr/dotfiles](https://github.com/cffnpwr/dotfiles)
-[taiyme/dotfiles](https://github.com/taiyme/dotfiles)
+- [cffnpwr/dotfiles](https://github.com/cffnpwr/dotfiles)
+- [taiyme/dotfiles](https://github.com/taiyme/dotfiles)
