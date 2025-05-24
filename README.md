@@ -14,6 +14,14 @@ arm64なmacOSとx64なLinuxでの使用を想定しています
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
 ```
 
+## メモ
+
+```sh
+# .Brewfile を更新する
+brew bundle dump --file="$(chezmoi source-path)/dot_Brewfile_macos" --no-vscode --force
+```
+
 ## :miteru_sakananoonigiri:
 
 [cffnpwr/dotfiles](https://github.com/cffnpwr/dotfiles)
+[taiyme/dotfiles](https://github.com/taiyme/dotfiles)
