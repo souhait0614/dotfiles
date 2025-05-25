@@ -1,6 +1,8 @@
 name: Dotfiles CI
 on:
   push:
+    paths:
+      - 'home/**'
 
 jobs:
   apply_test_macos:
