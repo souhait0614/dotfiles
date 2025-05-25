@@ -25,3 +25,7 @@ brew bundle dump --file="$(chezmoi source-path)/dot_Brewfile_macos" --no-vscode 
 
 - [cffnpwr/dotfiles](https://github.com/cffnpwr/dotfiles)
 - [taiyme/dotfiles](https://github.com/taiyme/dotfiles)
+
+## ライセンス
+
+[MIT License](./LICENSE)
