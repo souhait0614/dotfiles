@@ -21,11 +21,15 @@ if which deno > /dev/null; then
 fi
 
 # @antfu/ni command completion
-if which ni > /dev/null; then
-  if [ ! -d ~/.config/zsh/site-functions/ ]; then
-    mkdir -p ~/.config/zsh/site-functions
-  fi
-  curl -o ~/.config/zsh/site-functions/_ni https://raw.githubusercontent.com/snowsman/ni-completion/main/.ni.zsh
+# if which ni > /dev/null; then
+#   if [ ! -d ~/.config/zsh/site-functions/ ]; then
+#     mkdir -p ~/.config/zsh/site-functions
+#   fi
+#   curl -o ~/.config/zsh/site-functions/_ni https://raw.githubusercontent.com/snowsman/ni-completion/main/.ni.zsh
+# fi
+# Remove old ni completion if it exists
+if [ -f ~/.config/zsh/site-functions/_ni ]; then
+  rm ~/.config/zsh/site-functions/_ni
 fi
 
 {{ end -}}
