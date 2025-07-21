@@ -12,8 +12,8 @@ brewfile="$HOME/.Brewfile_linux"
 
 {{ if and (eq .chezmoi.os "darwin") (eq (env "CI") "true") -}}
 echo "CI環境ではmasでのインストールをスキップします"
-MAS_APPS="$(cat $brewfile | grep -v brew | grep mas | sed 's/^.*"\(.*\)".*$/\1/' | tr '\n' ' ')"
-echo "スキップするアプリ: $MAS_APPS"
+MAS_APPS="$(cat $brewfile | grep -v brew | grep mas | sed 's/^mas ".*", id: \([0-9]*\)$/\1/' | tr '\n' ' ')"
+echo "スキップするアプリのID: $MAS_APPS"
 export HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS"
 {{ end -}}
 
