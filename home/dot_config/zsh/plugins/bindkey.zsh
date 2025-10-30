@@ -3,6 +3,8 @@
 # Key bindings
 bindkey "^A"          beginning-of-line
 bindkey "^E"          end-of-line
+bindkey "^[[1;5C"     beginning-of-line
+bindkey "^[[1;5D"     end-of-line
 bindkey "^[f"         forward-word
 bindkey "^[b"         backward-word
 bindkey "^[[1;3C"     forward-word
