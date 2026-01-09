@@ -1,0 +1,5 @@
+[tools]
+deno = "2.6.4"
+
+[settings]
+pin = true

@@ -1,5 +1,5 @@
 import * as k from "https://deno.land/x/karabinerts@1.31.0/deno.ts";
-import * as fs from "jsr:@std/fs";
+import * as fs from "jsr:@std/fs@1.0.21";
 import baseConfig from "./base_config.json" with { type: "json" };
 
 const DEFAULT_PROFILE_NAME = "Default";
