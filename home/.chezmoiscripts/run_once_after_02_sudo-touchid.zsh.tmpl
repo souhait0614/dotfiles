@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+{{ if and (eq .chezmoi.os "darwin") (eq (env "CI") "true") -}}
+echo "CI環境ではsudo-touchidの設定をスキップします"
+{{ else -}}
+echo "Touch IDでsudoを使用できるように設定します..."
+sudo-touchid
+{{ end -}}
+
+{{ end -}}
