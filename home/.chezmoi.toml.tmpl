@@ -2,12 +2,20 @@
 {{ $git_user_name := "" -}}
 {{ $git_user_email := "" -}}
 {{ $git_use_gpgsign := false -}}
+{{ $homebrew_install_path_macos := "/opt/homebrew" -}}
+{{ $homebrew_install_path_linux := "/home/linuxbrew/.linuxbrew" -}}
 
 {{ if stdinIsATTY -}}
   {{ $github_username = promptStringOnce . "github_username" "Enter your GitHub username" -}}
   {{ $git_user_name = promptStringOnce . "git_user_name" "Enter your Git user.name" -}}
   {{ $git_user_email = promptStringOnce . "git_user_email" "Enter your Git user.email" -}}
   {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits?" -}}
+
+  {{ if eq .chezmoi.os "darwin" -}}
+    {{ $homebrew_install_path := promptStringOnce . "homebrew_install_path" (printf "Enter your Homebrew install path (default: %s)" $homebrew_install_path_macos) $homebrew_install_path_macos -}}
+  {{ else if eq .chezmoi.os "linux" -}}
+    {{ $homebrew_install_path := promptStringOnce . "homebrew_install_path" (printf "Enter your Homebrew install path (default: %s)" $homebrew_install_path_linux) $homebrew_install_path_linux -}}
+  {{ end -}}
 {{ else -}}
   {{ $github_username = "github-actions[bot]" -}}
   {{ $git_user_name = "github-actions[bot]" -}}
@@ -20,3 +28,5 @@
   git_user_name = {{ $git_user_name | quote }}
   git_user_email = {{ $git_user_email | quote }}
   git_use_gpgsign = {{ $git_use_gpgsign | quote }}
+  homebrew_install_path_macos = {{ $homebrew_install_path_macos | quote }}
+  homebrew_install_path_linux = {{ $homebrew_install_path_linux | quote }}
