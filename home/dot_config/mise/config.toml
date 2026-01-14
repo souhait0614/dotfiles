@@ -5,7 +5,8 @@ node = "lts"
 "npm:@antfu/ni" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
-"npm:pnpm" = "latest"
+# "npm:pnpm" = "latest"
+pnpm = "latest"
 "npm:wrangler" = "latest"
 
 [settings]
