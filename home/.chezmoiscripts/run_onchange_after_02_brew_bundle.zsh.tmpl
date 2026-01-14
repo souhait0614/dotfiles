@@ -2,6 +2,10 @@
 
 # dot_Brewfile_macos hash: {{ include "dot_Brewfile_macos" | sha256sum }}
 # dot_Brewfile_linux hash: {{ include "dot_Brewfile_linux" | sha256sum }}
+{{ if ne (env "CHEZMOI_SKIP_HOMEBREW_BUNDLE") "" -}}
+echo "CHEZMOI_SKIP_HOMEBREW_BUNDLE が設定されているため、brew bundle をスキップします"
+exit 0
+{{ end -}}
 {{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
