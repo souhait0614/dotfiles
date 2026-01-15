@@ -14,12 +14,7 @@ path=(
   ${HOME}/.local/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/local/bin(N-/)
-  {{ if eq .chezmoi.os "darwin" -}}
-  {{ .homebrew_install_path_macos }}/bin(N-/)
-  {{ end -}}
-  {{ if eq .chezmoi.os "linux" -}}
-  {{ .homebrew_install_path_linux }}/bin(N-/)
-  {{ end -}}
+  {{ .homebrew_install_path }}/bin(N-/)
   $path
 )
 

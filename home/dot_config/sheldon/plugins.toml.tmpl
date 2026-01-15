@@ -69,11 +69,7 @@ local = "~/.config/zsh/site-functions/"
 apply = ["defer", "fpath"]
 
 [plugins.homebrew]
-{{ if eq .chezmoi.os "darwin" -}}
-inline = 'eval "$({{ .homebrew_install_path_macos }}/bin/brew shellenv)"'
-{{ else if eq .chezmoi.os "linux" -}}
-inline = 'eval "$({{ .homebrew_install_path_linux }}/bin/brew shellenv)"'
-{{ end -}}
+inline = 'eval "$({{ .homebrew_install_path }}/bin/brew shellenv)"'
 
 {{ if eq .chezmoi.os "darwin" -}}
 [plugins.orbstack]
