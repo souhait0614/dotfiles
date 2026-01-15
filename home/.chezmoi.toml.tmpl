@@ -15,9 +15,9 @@
   {{ $github_username = promptStringOnce . "github_username" "Enter your GitHub username" -}}
   {{ $git_user_name = promptStringOnce . "git_user_name" "Enter your Git user.name" -}}
   {{ $git_user_email = promptStringOnce . "git_user_email" "Enter your Git user.email" -}}
-  {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits?" -}}
+  {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits" -}}
   {{ $homebrew_install_path = promptStringOnce . "homebrew_install_path" (printf "Enter your Homebrew install path (default: %s)" $homebrew_install_path) $homebrew_install_path -}}
-  {{ $skip_homebrew_bundle = promptBoolOnce . "skip_homebrew_bundle" "Skip Homebrew bundle installation?" -}}
+  {{ $skip_homebrew_bundle = promptBoolOnce . "skip_homebrew_bundle" "Skip Homebrew bundle installation" -}}
 {{ else -}}
   {{ $github_username = "github-actions[bot]" -}}
   {{ $git_user_name = "github-actions[bot]" -}}
