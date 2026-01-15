@@ -12,6 +12,9 @@
 
 shell = "zsh"
 
+# デフォルトで遅延読み込みする
+apply = ["defer"]
+
 [templates]
 defer = "{% for file in files %}zsh-defer source {{ `\"{{ file }}\"` }}\n{% endfor %}"
 
@@ -19,28 +22,33 @@ defer = "{% for file in files %}zsh-defer source {{ `\"{{ file }}\"` }}\n{% endf
 
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
+apply = ["source"]
+
+[plugins.compinit]
+inline = """
+autoload -Uz compinit
+zsh-defer -a -t0.01 compinit -d "$XDG_STATE_HOME/zsh/zcompdump"
+"""
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
-apply = ["defer"]
 
-[plugins.zsh-syntax-highlighting]
-github = "zsh-users/zsh-syntax-highlighting"
+[plugins.fast-syntax-highlighting]
+github = "zdharma/fast-syntax-highlighting"
 
 [plugins.zsh-autocomplete]
 github = "marlonrichert/zsh-autocomplete"
+#NOTE deferすると入力を受け付けなくなるのでdeferしない
+apply = ["source"]
 
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
-apply = ["defer"]
 
 [plugins.zsh-history-substring-search]
 github = "zsh-users/zsh-history-substring-search"
-apply = ["defer"]
 
 [plugins.zsh-replace-multiple-dots]
 github = "momo-lab/zsh-replace-multiple-dots"
-apply = ["defer"]
 
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
@@ -54,15 +62,8 @@ path=(
 )
 '''
 
-[plugins.compinit]
-inline = """
-autoload -Uz compinit
-zsh-defer -a -t0.01 compinit -d "$XDG_STATE_HOME/zsh/zcompdump"
-"""
-
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
-apply = ["defer"]
 
 [plugins.local-zsh-completions]
 local = "~/.config/zsh/site-functions/"
@@ -75,5 +76,4 @@ inline = 'eval "$({{ .homebrew_install_path }}/bin/brew shellenv)"'
 [plugins.orbstack]
 local = "~/.orbstack/shell/"
 use = ["init.zsh"]
-apply = ["defer"]
 {{ end -}}
