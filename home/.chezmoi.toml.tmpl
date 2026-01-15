@@ -3,6 +3,7 @@
 {{ $git_user_email := "" -}}
 {{ $git_use_gpgsign := false -}}
 {{ $homebrew_install_path := "" -}}
+{{ $skip_homebrew_bundle := false -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
   {{ $homebrew_install_path = "/opt/homebrew" -}}
@@ -16,6 +17,7 @@
   {{ $git_user_email = promptStringOnce . "git_user_email" "Enter your Git user.email" -}}
   {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits?" -}}
   {{ $homebrew_install_path = promptStringOnce . "homebrew_install_path" (printf "Enter your Homebrew install path (default: %s)" $homebrew_install_path) $homebrew_install_path -}}
+  {{ $skip_homebrew_bundle = promptBoolOnce . "skip_homebrew_bundle" "Skip Homebrew bundle installation?" -}}
 {{ else -}}
   {{ $github_username = "github-actions[bot]" -}}
   {{ $git_user_name = "github-actions[bot]" -}}
@@ -29,3 +31,4 @@
   git_user_email = {{ $git_user_email | quote }}
   git_use_gpgsign = {{ $git_use_gpgsign | quote }}
   homebrew_install_path = {{ $homebrew_install_path | quote }}
+  skip_homebrew_bundle = {{ $skip_homebrew_bundle | quote }}
