@@ -54,13 +54,7 @@ github = "momo-lab/zsh-replace-multiple-dots"
 inline = 'eval "$(starship init zsh)"'
 
 [plugins.mise]
-inline = '''
-eval "$(mise activate zsh)"
-path=(
-  ${HOME}/.local/share/mise/shims(N-/)
-  $path
-)
-'''
+inline = 'eval "$(mise activate zsh)"'
 
 [plugins.atuin]
 inline = 'zsh-defer eval "$(atuin init zsh --disable-up-arrow)"'
