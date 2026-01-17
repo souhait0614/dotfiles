@@ -1,13 +1,26 @@
 #!/bin/zsh
 
-# history
-# 履歴ファイルの保存先
-export HISTFILE="${XDG_STATE_HOME}/.zsh_history"
+cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
+sheldon_cache="$cache_dir/sheldon.zsh"
+sheldon_toml="$HOME/.config/sheldon/plugins.toml"
+# キャッシュがない、またはキャッシュが古い場合にキャッシュを作成
+if [[ ! -r "$sheldon_cache" || "$sheldon_toml" -nt "$sheldon_cache" ]]; then
+  mkdir -p $cache_dir
+  sheldon source > $sheldon_cache
+fi
+source "$sheldon_cache"
+# 使い終わった変数を削除
+unset cache_dir sheldon_cache sheldon_toml
+
+# History settings
+# システムのHISTFILE設定を上書き
+export HISTFILE=${XDG_STATE_HOME}/zsh/.zsh_history
 # メモリに保存される履歴の件数
 export HISTSIZE=1000
 # 履歴ファイルに保存される履歴の件数
 export SAVEHIST=100000
 export HISTFILESIZE=100000
+
 # 重複を記録しない
 setopt hist_ignore_dups
 # 開始と終了を記録
@@ -29,9 +42,9 @@ setopt hist_expand
 # history共有
 setopt share_history
 
-# other
+# Other zsh settings
 # zshの補完候補が画面から溢れ出る時、それでも表示するか確認
-export LISTMAX=100
+export LISTMAX=50
 # バックグラウンドジョブの優先度(ionice)をbashと同じ挙動に
 unsetopt bg_nice
 # 補完候補を詰めて表示
@@ -40,15 +53,5 @@ setopt list_packed
 setopt no_beep
 # ファイル種別起動を補完候補の末尾に表示しない
 unsetopt list_types
-
-cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
-sheldon_cache="$cache_dir/sheldon.zsh"
-sheldon_toml="$HOME/.config/sheldon/plugins.toml"
-# キャッシュがない、またはキャッシュが古い場合にキャッシュを作成
-if [[ ! -r "$sheldon_cache" || "$sheldon_toml" -nt "$sheldon_cache" ]]; then
-  mkdir -p $cache_dir
-  sheldon source > $sheldon_cache
-fi
-source "$sheldon_cache"
-# 使い終わった変数を削除
-unset cache_dir sheldon_cache sheldon_toml
+# スラッシュを区切り文字に含める
+export WORDCHARS="${WORDCHARS//\/}"
