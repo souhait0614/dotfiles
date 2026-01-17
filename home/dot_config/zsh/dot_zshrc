@@ -14,7 +14,7 @@ unset cache_dir sheldon_cache sheldon_toml
 
 # History settings
 # システムのHISTFILE設定を上書き
-export HISTFILE=${XDG_STATE_HOME}/zsh/.zsh_history
+export HISTFILE=${XDG_STATE_HOME}/.zsh_history
 # メモリに保存される履歴の件数
 export HISTSIZE=1000
 # 履歴ファイルに保存される履歴の件数
