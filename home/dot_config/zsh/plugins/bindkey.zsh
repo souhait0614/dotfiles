@@ -12,9 +12,6 @@ bindkey "^[[1;3D"     backward-word
 bindkey "^[^?"        backward-kill-word
 bindkey "^[[killline" vi-kill-line
 bindkey "^I"          menu-select
-bindkey "^R"          fzf-select-history
-bindkey "^X"          fzf-cd-src
-bindkey "^F"          fzf-cdr
 
 bindkey               "$terminfo[kcbt]" menu-select
 bindkey -M menuselect              "^I" menu-complete

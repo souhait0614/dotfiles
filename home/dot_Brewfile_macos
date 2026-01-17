@@ -1,4 +1,5 @@
 tap "artginzburg/tap"
+brew "atuin"
 brew "bat"
 brew "chezmoi"
 brew "eza"

@@ -62,6 +62,9 @@ path=(
 )
 '''
 
+[plugins.atuin]
+inline = 'zsh-defer eval "$(atuin init zsh --disable-up-arrow)"'
+
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
 
