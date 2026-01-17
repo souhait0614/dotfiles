@@ -69,9 +69,6 @@ local = "~/.config/zsh/plugins/"
 local = "~/.config/zsh/site-functions/"
 apply = ["defer", "fpath"]
 
-[plugins.homebrew]
-inline = 'eval "$({{ .homebrew_install_path }}/bin/brew shellenv)"'
-
 {{ if eq .chezmoi.os "darwin" -}}
 [plugins.orbstack]
 local = "~/.orbstack/shell/"

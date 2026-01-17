@@ -14,7 +14,6 @@ path=(
   ${HOME}/.local/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/local/bin(N-/)
-  {{ .homebrew_install_path }}/bin(N-/)
   $path
 )
 
@@ -33,4 +32,8 @@ export GIT_EDITOR="${EDITOR}"
 {{ if eq .chezmoi.os "darwin" -}}
 # SSH Agent
 export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+{{ end -}}
+
+{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+eval "$({{ .homebrew_install_path }}/bin/brew shellenv)"
 {{ end -}}
