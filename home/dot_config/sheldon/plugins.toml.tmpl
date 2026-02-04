@@ -59,6 +59,9 @@ inline = 'eval "$(mise activate zsh)"'
 [plugins.atuin]
 inline = 'zsh-defer eval "$(atuin init zsh --disable-up-arrow)"'
 
+[plugins.zoxide]
+inline = 'zsh-defer eval "$(zoxide init zsh --cmd cd)"'
+
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
 
