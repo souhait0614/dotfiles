@@ -1,5 +1,5 @@
 [tools]
-deno = "2.6.4"
+deno = "2.7.1"
 
 [settings]
 pin = true
