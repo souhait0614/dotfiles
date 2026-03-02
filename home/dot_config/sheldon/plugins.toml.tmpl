@@ -50,8 +50,9 @@ github = "zsh-users/zsh-history-substring-search"
 [plugins.zsh-replace-multiple-dots]
 github = "momo-lab/zsh-replace-multiple-dots"
 
-[plugins.spaceship]
-github = "spaceship-prompt/spaceship-prompt"
+[plugins.pure]
+github = "sindresorhus/pure"
+use = ["async.zsh", "pure.zsh"]
 #NOTE deferするとテーマが反映されないのでdeferしない
 apply = ["source"]
 
