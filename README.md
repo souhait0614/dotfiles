@@ -18,7 +18,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
 
 ```sh
 # .Brewfile を更新する
-brew bundle dump --file="$(chezmoi source-path)/dot_Brewfile_macos" --no-vscode --force
+brew bundle dump --file="$(chezmoi source-path)/dot_Brewfile_macos" --no-vscode --no-npm --no-describe --force
 ```
 
 ## :miteru_sakananoonigiri:
