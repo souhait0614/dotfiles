@@ -1,0 +1,52 @@
+{ pkgs, primaryUser, self, ... }:
+
+{
+  nix = {
+    enable = true;
+    package = pkgs.lixPackageSets.stable.lix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  system = {
+    configurationRevision = self.rev or self.dirtyRev or null;
+    primaryUser = primaryUser;
+    stateVersion = 7;
+  };
+
+  users.users.${primaryUser}.home = "/Users/${primaryUser}";
+
+  environment.systemPackages = with pkgs; [
+{{ range .nix.packages }}    {{ . }}
+{{ end }}  ];
+
+  fonts.packages = with pkgs; [
+{{ range .nix.fonts }}    {{ . }}
+{{ end }}  ];
+
+  homebrew = {
+    enable = true;
+    user = primaryUser;
+    onActivation = {
+      autoUpdate = false;
+      cleanup = {{ .homebrew.cleanup | quote }};
+      upgrade = false;
+    };
+    taps = [
+{{ range .homebrew.taps }}      {
+        name = {{ . | quote }};
+        trusted = true;
+      }
+{{ end }}    ];
+    brews = [
+{{ range .homebrew.brews }}      {{ . | quote }}
+{{ end }}    ];
+    casks = [
+{{ range .homebrew.casks }}      {{ . | quote }}
+{{ end }}    ];
+  };
+
+  programs.zsh.enable = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
+}

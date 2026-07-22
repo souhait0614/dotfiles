@@ -1,34 +1,23 @@
-{{ $github_username := "" -}}
-{{ $git_user_name := "" -}}
-{{ $git_user_email := "" -}}
-{{ $git_use_gpgsign := false -}}
-{{ $homebrew_install_path := "" -}}
-{{ $skip_homebrew_bundle := false -}}
+{{ $useSudo := false -}}
+{{ $arch := .chezmoi.arch -}}
 
-{{ if eq .chezmoi.os "darwin" -}}
-  {{ $homebrew_install_path = "/opt/homebrew" -}}
-{{ else if eq .chezmoi.os "linux" -}}
-  {{ $homebrew_install_path = "/home/linuxbrew/.linuxbrew" -}}
+{{ if eq $arch "amd64" -}}
+  {{ $arch = "x86_64" -}}
+{{ end -}}
+{{ $platform := printf "%s-%s" .chezmoi.os $arch -}}
+{{ $brewCommand := "" -}}
+
+{{ if eq $platform "darwin-arm64" -}}
+  {{ $brewCommand = "/opt/homebrew/bin/brew" -}}
 {{ end -}}
 
 {{ if stdinIsATTY -}}
-  {{ $github_username = promptStringOnce . "github_username" "Enter your GitHub username" -}}
-  {{ $git_user_name = promptStringOnce . "git_user_name" "Enter your Git user.name" -}}
-  {{ $git_user_email = promptStringOnce . "git_user_email" "Enter your Git user.email" -}}
-  {{ $git_use_gpgsign = promptBoolOnce . "git_use_gpgsign" "Use GPG sign for commits" -}}
-  {{ $homebrew_install_path = promptStringOnce . "homebrew_install_path" (printf "Enter your Homebrew install path (default: %s)" $homebrew_install_path) $homebrew_install_path -}}
-  {{ $skip_homebrew_bundle = promptBoolOnce . "skip_homebrew_bundle" "Skip Homebrew bundle installation" -}}
+  {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
 {{ else -}}
-  {{ $github_username = "github-actions[bot]" -}}
-  {{ $git_user_name = "github-actions[bot]" -}}
-  {{ $git_user_email = "41898282+github-actions[bot]@users.noreply.github.com" -}}
-  {{ $git_use_gpgsign = false -}}
+  {{ $useSudo = true -}}
 {{ end -}}
 
 [data]
-  github_username = {{ $github_username | quote }}
-  git_user_name = {{ $git_user_name | quote }}
-  git_user_email = {{ $git_user_email | quote }}
-  git_use_gpgsign = {{ $git_use_gpgsign | quote }}
-  homebrew_install_path = {{ $homebrew_install_path | quote }}
-  skip_homebrew_bundle = {{ $skip_homebrew_bundle | quote }}
+  brew_command = {{ $brewCommand | quote }}
+  platform = {{ $platform | quote }}
+  useSudo = {{ $useSudo }}

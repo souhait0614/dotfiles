@@ -2,14 +2,14 @@
 ./LICENSE
 ./deno_scripts
 
-{{ if ne .chezmoi.os "darwin" -}}
-.Brewfile_macos
+{{ if ne .platform "darwin-arm64" -}}
+.config/nix-darwin
 {{ end -}}
 
-{{ if ne .chezmoi.os "linux" -}}
-.Brewfile_linux
+{{ if not (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
+.config/nix/packages
 {{ end -}}
 
-{{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{ if and (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 .ssh
 {{ end -}}

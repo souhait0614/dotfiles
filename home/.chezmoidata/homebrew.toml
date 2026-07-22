@@ -1,0 +1,38 @@
+[homebrew]
+install = true
+cleanup = "uninstall"
+brews = [
+	"mole",
+]
+casks = [
+	"android-platform-tools",
+	"apparency",
+	"audacity",
+	"azookey",
+	"kgarner7/feishin/feishin",
+	"firefox",
+	"ghostty",
+	"google-japanese-ime",
+	"iina",
+	"inkscape",
+	"karabiner-elements",
+	"keyboardcleantool",
+	"maccy",
+	"openinterminal",
+	"openmtp",
+	"orbstack",
+	"stats",
+	"tailscale-app",
+	"upscayl",
+	"vesktop",
+	"visual-studio-code",
+	"vivaldi",
+	"xcodes-app",
+	"li-na/zed-i18n/zed-i18n",
+	"zen",
+]
+taps = [
+	"artginzburg/tap",
+	"kgarner7/feishin",
+	"li-na/zed-i18n",
+]

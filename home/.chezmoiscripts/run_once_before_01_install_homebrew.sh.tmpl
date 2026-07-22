@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{ if not .homebrew.install -}}
+echo "chezmoi dataで無効化されているため、Homebrewのインストールをスキップします。"
+exit 0
+{{ end -}}
+
+{{ if eq .platform "darwin-arm64" -}}
+{{ else -}}
+echo "HomebrewはApple Silicon Macでのみ使用します。"
+exit 0
+{{ end -}}
+
+if command -v brew >/dev/null 2>&1 || [ -x {{ .brew_command | quote }} ]; then
+    echo "Homebrewはインストール済みです。"
+    exit 0
+fi
+
+{{ if not .useSudo -}}
+echo "sudoの使用が許可されていないため、Homebrewのインストールをスキップします。"
+exit 0
+{{ end -}}
+
+echo "Homebrewをインストールします。"
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

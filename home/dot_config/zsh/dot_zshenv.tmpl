@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # 重複排除
 typeset -Ug path PATH fpath FPATH
@@ -12,6 +12,7 @@ export XDG_STATE_HOME=${HOME}/.local/state
 # path
 path=(
   ${HOME}/.local/bin(N-/)
+  ${HOME}/.local/state/nix/profiles/dotfiles-cli/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/local/bin(N-/)
   $path
@@ -29,11 +30,13 @@ export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
 
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .platform "darwin-arm64" -}}
 # SSH Agent
 export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
 {{ end -}}
 
-{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
-eval "$({{ .homebrew_install_path }}/bin/brew shellenv)"
+{{ if eq .platform "darwin-arm64" -}}
+if [[ -x {{ .brew_command | quote }} ]]; then
+  eval "$("{{ .brew_command }}" shellenv)"
+fi
 {{ end -}}

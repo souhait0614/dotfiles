@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # Key bindings
 bindkey "^A"          beginning-of-line

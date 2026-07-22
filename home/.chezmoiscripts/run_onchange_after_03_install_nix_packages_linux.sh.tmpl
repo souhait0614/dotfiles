@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# flake.nix hash: {{ include "dot_config/nix/packages/flake.nix.tmpl" | sha256sum }}
+# packages hash: {{ .nix.packages | toJson | sha256sum }}
+{{ if not (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
+exit 0
+{{ end -}}
+
+if command -v nix >/dev/null 2>&1; then
+    nix_command="$(command -v nix)"
+elif [ -x /nix/var/nix/profiles/default/bin/nix ]; then
+    nix_command="/nix/var/nix/profiles/default/bin/nix"
+else
+{{ if not .useSudo -}}
+    echo "Lixがなくsudoの使用も許可されていないため、CLIパッケージのインストールをスキップします。"
+    exit 0
+{{ else -}}
+    echo "Lixが見つからないため、CLIパッケージをインストールできません。" >&2
+    exit 1
+{{ end -}}
+fi
+
+config_dir="$HOME/.config/nix/packages"
+profile_dir="$HOME/.local/state/nix/profiles"
+mkdir -p "$profile_dir"
+
+"$nix_command" --extra-experimental-features "nix-command flakes" \
+    build "$config_dir#default" --out-link "$profile_dir/dotfiles-cli"

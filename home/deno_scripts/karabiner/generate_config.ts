@@ -1,5 +1,5 @@
-import * as k from "https://deno.land/x/karabinerts@1.31.0/deno.ts";
-import * as fs from "jsr:@std/fs@1.0.21";
+import * as k from "karabinerts";
+import * as fs from "@std/fs";
 import baseConfig from "./base_config.json" with { type: "json" };
 
 const DEFAULT_PROFILE_NAME = "Default";
@@ -50,6 +50,11 @@ fs.existsSync(CONFIG_FILE_PATH) && Deno.removeSync(CONFIG_FILE_PATH);
 fs.ensureFileSync(CONFIG_FILE_PATH);
 Deno.writeTextFileSync(CONFIG_FILE_PATH, JSON.stringify(baseConfig), {
   create: false,
+});
+
+k.writeToGlobal({
+  "show_in_menu_bar": false,
+  "show_profile_name_in_menu_bar": false,
 });
 
 k.writeToProfile({

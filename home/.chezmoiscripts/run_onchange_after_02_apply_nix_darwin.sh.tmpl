@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# flake.nix hash: {{ include "dot_config/nix-darwin/flake.nix.tmpl" | sha256sum }}
+# configuration.nix hash: {{ include "dot_config/nix-darwin/configuration.nix.tmpl" | sha256sum }}
+# packages hash: {{ .nix.packages | toJson | sha256sum }}
+# fonts hash: {{ .nix.fonts | toJson | sha256sum }}
+# homebrew hash: {{ .homebrew | toJson | sha256sum }}
+{{ if or (ne .platform "darwin-arm64") (not .useSudo) -}}
+echo "nix-darwinの適用をスキップします。"
+exit 0
+{{ end -}}
+
+if command -v nix >/dev/null 2>&1; then
+    nix_command="$(command -v nix)"
+elif [ -x /nix/var/nix/profiles/default/bin/nix ]; then
+    nix_command="/nix/var/nix/profiles/default/bin/nix"
+else
+    echo "Lixが見つからないため、nix-darwinを適用できません。" >&2
+    exit 1
+fi
+
+config_dir="$HOME/.config/nix-darwin"
+"$nix_command" --extra-experimental-features "nix-command flakes" flake lock "$config_dir"
+sudo_command=(sudo)
+if [[ -n "${NIX_CONFIG:-}" ]]; then
+    sudo_command+=(--preserve-env=NIX_CONFIG)
+fi
+
+"${sudo_command[@]}" "$nix_command" --extra-experimental-features "nix-command flakes" \
+    run github:nix-darwin/nix-darwin/master#darwin-rebuild -- \
+    switch --flake "$config_dir#{{ .chezmoi.hostname }}"

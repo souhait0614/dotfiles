@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "karabinerts": "https://deno.land/x/karabinerts@1.38.0/deno.ts",
+    "@std/fs": "jsr:@std/fs@^1.0.24"
+  }
+}

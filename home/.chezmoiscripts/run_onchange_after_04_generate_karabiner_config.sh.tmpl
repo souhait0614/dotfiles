@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# generate_config.ts hash: {{ include "deno_scripts/karabiner/generate_config.ts" | sha256sum }}
+{{ if eq .platform "darwin-arm64" -}}
+
+mise_command="/run/current-system/sw/bin/mise"
+
+if [[ ! -x "${mise_command}" ]]; then
+	echo "miseが見つかりません: ${mise_command}" >&2
+	exit 1
+fi
+
+echo "Karabiner-Elementsの設定を生成します..."
+"${mise_command}" exec deno@2.7.1 -- deno run --allow-read --allow-write --allow-env {{ joinPath .chezmoi.sourceDir "deno_scripts/karabiner/generate_config.ts" | quote }}
+
+{{ end -}}

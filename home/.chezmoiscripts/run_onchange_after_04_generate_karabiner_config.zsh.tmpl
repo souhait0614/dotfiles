@@ -1,9 +1,0 @@
-#!/bin/zsh
-
-# deno_scripts/karabiner/generate_config.ts hash: {{ include "deno_scripts/karabiner/generate_config.ts" | sha256sum }}
-{{ if eq .chezmoi.os "darwin" -}}
-
-echo "Karabiner-Elementsの設定を生成します..."
-mise exec deno@latest -- deno run --allow-read --allow-write --allow-env {{ joinPath .chezmoi.sourceDir "deno_scripts/karabiner/generate_config.ts" | quote }}
-
-{{ end -}}

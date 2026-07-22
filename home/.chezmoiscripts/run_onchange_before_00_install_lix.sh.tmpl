@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Lix version: {{ .lix.version }}
+{{ if not .useSudo -}}
+echo "sudoの使用が許可されていないため、Lixのインストールをスキップします。"
+exit 0
+{{ end -}}
+
+{{ if eq .platform "darwin-arm64" -}}
+lix_version={{ .lix.version | quote }}
+target="aarch64-darwin"
+{{ else if eq .platform "linux-arm64" -}}
+lix_version={{ .lix.version | quote }}
+target="aarch64-linux"
+{{ else if eq .platform "linux-x86_64" -}}
+lix_version={{ .lix.version | quote }}
+target="x86_64-linux"
+{{ else -}}
+echo "このOS/アーキテクチャではLixの自動インストールをサポートしていません。"
+exit 0
+{{ end -}}
+
+if command -v nix >/dev/null 2>&1; then
+    nix_command="$(command -v nix)"
+elif [ -x /nix/var/nix/profiles/default/bin/nix ]; then
+    nix_command="/nix/var/nix/profiles/default/bin/nix"
+else
+    nix_command=""
+fi
+
+if [ -n "$nix_command" ]; then
+    if "$nix_command" --version | grep -F "Lix, like Nix) ${lix_version}" >/dev/null; then
+        echo "Lix ${lix_version}はインストール済みです。"
+        exit 0
+    fi
+
+    echo "既存のNix実装をLix ${lix_version}へ更新します。"
+    curl -sSfL "https://git.lix.systems/lix-project/lix/raw/tag/{{ .lix.upgradeScriptVersion }}/misc/upgrade-lix.sh" \
+        | sudo --preserve-env=PATH bash -s -- "${lix_version}"
+    exit 0
+fi
+
+package_url="{{ .lix.releaseRoot }}/lix-${lix_version}/lix-${lix_version}-${target}.tar.xz"
+echo "Lix ${lix_version}をインストールします。"
+curl -sSfL {{ .lix.installerRoot | quote }} \
+    | NIX_INSTALLER_NIX_PACKAGE_URL="${package_url}" sh -s -- install --no-confirm

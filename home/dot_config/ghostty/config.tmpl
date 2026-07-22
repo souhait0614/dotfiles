@@ -8,7 +8,7 @@ font-feature = "-calt"
 font-feature = "-dlig"
 font-feature = "-liga"
 
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .platform "darwin-arm64" -}}
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
 {{ end -}}

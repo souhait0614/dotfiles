@@ -1,0 +1,7 @@
+[git]
+githubUsername = "souhait0614"
+userName = "souhait"
+userEmail = "me@souhait.me"
+signCommits = true
+signingFormat = "ssh"
+signingKey = "~/.ssh/identity.pub"

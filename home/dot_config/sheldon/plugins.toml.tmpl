@@ -72,7 +72,7 @@ local = "~/.config/zsh/plugins/"
 local = "~/.config/zsh/site-functions/"
 apply = ["defer", "fpath"]
 
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .platform "darwin-arm64" -}}
 [plugins.orbstack]
 local = "~/.orbstack/shell/"
 use = ["init.zsh"]

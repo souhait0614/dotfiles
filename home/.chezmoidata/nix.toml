@@ -1,0 +1,25 @@
+[nix]
+packages = [
+  "atuin",
+  "bat",
+  "chezmoi",
+  "eza",
+  "fastfetch",
+  "fzf",
+  "gh",
+  "git",
+  "gnupg",
+  "gpac",
+  "mise",
+  "nano",
+  "sheldon",
+  "starship",
+  "tokei",
+  "zoxide",
+]
+fonts = [
+  "_0xproto",
+  "ibm-plex.sans-jp",
+  "plemoljp",
+  "plemoljp-nf",
+]

@@ -1,0 +1,19 @@
+{
+  description = "Cross-platform CLI packages";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+  outputs = { nixpkgs, ... }:
+    let
+      system = "{{ if eq .platform "linux-arm64" }}aarch64-linux{{ else if eq .platform "linux-x86_64" }}x86_64-linux{{ else }}unsupported{{ end }}";
+      pkgs = import nixpkgs { inherit system; };
+    in
+    {
+      packages.${system}.default = pkgs.buildEnv {
+        name = "dotfiles-cli";
+        paths = with pkgs; [
+{{ range .nix.packages }}          {{ . }}
+{{ end }}        ];
+      };
+    };
+}
