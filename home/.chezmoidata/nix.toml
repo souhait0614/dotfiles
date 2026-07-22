@@ -1,6 +1,5 @@
 [nix]
 packages = [
-  "atuin",
   "bat",
   "chezmoi",
   "eza",
@@ -13,7 +12,6 @@ packages = [
   "mise",
   "nano",
   "sheldon",
-  "starship",
   "tokei",
   "zoxide",
 ]
