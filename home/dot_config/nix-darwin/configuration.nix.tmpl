@@ -18,12 +18,16 @@
   users.users.${primaryUser}.home = "/Users/${primaryUser}";
 
   environment.systemPackages = with pkgs; [
-{{ range .nix.packages }}    {{ . }}
-{{ end }}  ];
+{{- range .nix.packages }}
+    {{ . }}
+{{- end }}
+  ];
 
   fonts.packages = with pkgs; [
-{{ range .nix.fonts }}    {{ . }}
-{{ end }}  ];
+{{- range .nix.fonts }}
+    {{ . }}
+{{- end }}
+  ];
 
   homebrew = {
     enable = true;
@@ -34,17 +38,23 @@
       upgrade = false;
     };
     taps = [
-{{ range .homebrew.taps }}      {
+{{- range .homebrew.taps }}
+      {
         name = {{ . | quote }};
         trusted = true;
       }
-{{ end }}    ];
+{{- end }}
+    ];
     brews = [
-{{ range .homebrew.brews }}      {{ . | quote }}
-{{ end }}    ];
+{{- range .homebrew.brews }}
+      {{ . | quote }}
+{{- end }}
+    ];
     casks = [
-{{ range .homebrew.casks }}      {{ . | quote }}
-{{ end }}    ];
+{{- range .homebrew.casks }}
+      {{ . | quote }}
+{{- end }}
+    ];
   };
 
   programs.zsh.enable = true;

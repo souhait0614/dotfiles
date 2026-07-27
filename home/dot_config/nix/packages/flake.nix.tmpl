@@ -12,8 +12,10 @@
       packages.${system}.default = pkgs.buildEnv {
         name = "dotfiles-cli";
         paths = with pkgs; [
-{{ range .nix.packages }}          {{ . }}
-{{ end }}        ];
+{{- range .nix.packages }}
+          {{ . }}
+{{- end }}
+        ];
       };
     };
 }
