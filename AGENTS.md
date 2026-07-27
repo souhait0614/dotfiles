@@ -46,6 +46,7 @@ Run the smallest relevant checks first:
 
   Keep platform branches renderable for all three supported `.platform` values;
   syntax-check each rendered shell script with `bash -n`.
+
 - For Karabiner TypeScript:
   `mise exec deno@2.7.1 -- deno fmt --check home/deno_scripts/karabiner` and
   `mise exec deno@2.7.1 -- deno check home/deno_scripts/karabiner/generate_config.ts`.
