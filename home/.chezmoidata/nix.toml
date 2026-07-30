@@ -15,4 +15,4 @@ packages = [
   "tokei",
   "zoxide",
 ]
-fonts = ["_0xproto", "ibm-plex.sans-jp", "plemoljp", "plemoljp-nf"]
+fonts = ["ibm-plex.sans-jp", "monaspace", "nerd-fonts.monaspace"]
