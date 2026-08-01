@@ -1,0 +1,20 @@
+# macOS metadata and filesystem artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Resource fork files created by macOS
+._*
+
+# Directory metadata on removable/network volumes
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.apdisk
+
+# Finder custom folder icons
+Icon?

@@ -5,7 +5,8 @@
     "*.sh.tmpl": "shellscript",
     "*.zsh.tmpl": "shellscript",
     "*.toml.tmpl": "toml",
-    "*.nix.tmpl": "nix"
+    "*.nix.tmpl": "nix",
+    "ignore": "ignore-slug"
   },
   "deno.enable": true,
   "[typescript]": {

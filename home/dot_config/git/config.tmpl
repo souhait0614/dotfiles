@@ -1,5 +1,7 @@
 [commit]
     gpgsign = {{ .git.signCommits }}
+[core]
+    excludesfile = ~/.config/git/ignore
 {{ if .git.signCommits -}}
 [gpg]
     format = {{ .git.signingFormat }}
