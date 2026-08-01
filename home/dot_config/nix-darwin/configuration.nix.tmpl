@@ -57,6 +57,37 @@
     ];
   };
 
+  system.defaults = {
+    NSGlobalDomain = {
+      AppleShowAllExtensions = true;
+      ApplePressAndHoldEnabled = false;
+      AppleKeyboardUIMode = 0;
+    };
+    dock = {
+      tilesize = 33;
+      "show-recents" = false;
+      mineffect = "scale";
+      "minimize-to-application" = true;
+    };
+    finder = {
+      ShowPathbar = true;
+      ShowStatusBar = true;
+      FXPreferredViewStyle = "Nlsv";
+      NewWindowTarget = "Home";
+    };
+    CustomUserPreferences = {
+      "com.apple.desktopservices" = {
+        DSDontWriteNetworkStores = true;
+        DSDontWriteUSBStores = true;
+      };
+      "com.apple.AppleMultitouchTrackpad" = {
+        Clicking = 0;
+        TrackpadThreeFingerDrag = 0;
+        TrackpadRightClick = 1;
+      };
+    };
+  };
+
   programs.zsh.enable = true;
   security.pam.services.sudo_local.touchIdAuth = true;
 }
