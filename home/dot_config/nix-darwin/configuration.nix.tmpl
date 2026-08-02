@@ -76,6 +76,33 @@
       NewWindowTarget = "Home";
     };
     CustomUserPreferences = {
+      "com.apple.Spotlight" = {
+        MenuItemHidden = 0;
+        EnabledPreferenceRules = [
+          "Custom.relatedContents"
+          "System.menuItems"
+          "System.iphoneApps"
+        ];
+        PasteboardHistoryEnabled = true;
+      };
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          "64" = {
+            enabled = true;
+            value = {
+              parameters = [ 65535 49 1048576 ];
+              type = "standard";
+            };
+          };
+          "65" = {
+            enabled = true;
+            value = {
+              parameters = [ 65535 49 1572864 ];
+              type = "standard";
+            };
+          };
+        };
+      };
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;
         DSDontWriteUSBStores = true;

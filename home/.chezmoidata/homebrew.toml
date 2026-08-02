@@ -15,7 +15,6 @@ casks = [
   "inkscape",
   "karabiner-elements",
   "keyboardcleantool",
-  "maccy",
   "openmtp",
   "orbstack",
   "stats",
