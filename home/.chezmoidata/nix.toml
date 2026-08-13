@@ -11,6 +11,7 @@ packages = [
   "gpac",
   "mise",
   "nano",
+  "ripgrep",
   "sheldon",
   "tokei",
   "zoxide",
