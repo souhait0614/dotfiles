@@ -1,6 +1,6 @@
 [tools]
-deno = "2.7.1"
-oxfmt = "0.60.0"
+deno = "2.9.5"
+oxfmt = "0.63.0"
 
 [settings]
 pin = true
