@@ -1,16 +1,12 @@
 #!/usr/bin/env zsh
 
-# Key bindings
-bindkey "^A"          beginning-of-line
-bindkey "^E"          end-of-line
-bindkey "^[f"         forward-word
-bindkey "^[b"         backward-word
-bindkey "^[[1;3C"     forward-word
+# Ctrl+Right: 行頭へ移動
+bindkey "^[[1;5D"     beginning-of-line
+# Ctrl+Left: 行末へ移動
+bindkey "^[[1;5C"     end-of-line
+# Alt+Left: 前の単語へ移動
 bindkey "^[[1;3D"     backward-word
+# Alt+Right: 次の単語へ移動
+bindkey "^[[1;3C"     forward-word
+# Alt+Backspace: 前の単語を削除
 bindkey "^[^?"        backward-kill-word
-bindkey "^[[killline" vi-kill-line
-bindkey "^I"          menu-select
-
-bindkey               "$terminfo[kcbt]" menu-select
-bindkey -M menuselect              "^I" menu-complete
-bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete

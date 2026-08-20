@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-# alias
 alias ls="eza --git"
 alias la="eza -a --git"
 alias ll="eza -ahl --git"
