@@ -30,9 +30,11 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
   `base_config.json`, not the generated `~/.config/karabiner/karabiner.json`.
   Edit `home/dot_config/nix/flake.nix.tmpl` for the cross-platform package and
   nix-darwin flake. Platform-specific source locks live at
-  `home/dot_config/nix/.flake-darwin.lock` and `.flake-linux.lock`; the rendered
-  lock is selected by `home/dot_config/nix/flake.lock.tmpl`. Do not edit the
-  rendered lock in the home directory.
+  `home/dot_config/nix/.locks/darwin/flake.lock` and `.locks/linux/flake.lock`;
+  their adjacent `flake.nix` files are Renovate manifests and must mirror the
+  corresponding inputs in the main flake template. The rendered lock is
+  selected by `home/dot_config/nix/flake.lock.tmpl`. Do not edit the rendered
+  lock in the home directory.
 - The source uses age encryption configured by `home/.chezmoi.toml.tmpl`.
   Git profile files under `home/dot_config/git/profiles/` are encrypted and
   should remain encrypted; never add credentials, tokens, private keys, or

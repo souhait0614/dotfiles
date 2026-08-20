@@ -4,12 +4,12 @@ set -euo pipefail
 # flake.nix hash: {{ include "dot_config/nix/flake.nix.tmpl" | sha256sum }}
 # packages hash: {{ .nix.packages | toJson | sha256sum }}
 {{ if eq .platform "darwin-arm64" -}}
-# flake.lock hash: {{ include "dot_config/nix/.flake-darwin.lock" | sha256sum }}
+# flake.lock hash: {{ include "dot_config/nix/.locks/darwin/flake.lock" | sha256sum }}
 # configuration.nix hash: {{ include "dot_config/nix/configuration.nix.tmpl" | sha256sum }}
 # fonts hash: {{ .nix.fonts | toJson | sha256sum }}
 # homebrew hash: {{ .homebrew | toJson | sha256sum }}
 {{ else if or (eq .platform "linux-arm64") (eq .platform "linux-x86_64") -}}
-# flake.lock hash: {{ include "dot_config/nix/.flake-linux.lock" | sha256sum }}
+# flake.lock hash: {{ include "dot_config/nix/.locks/linux/flake.lock" | sha256sum }}
 {{ end -}}
 {{ if not (or (eq .platform "darwin-arm64") (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
 echo "このOS/アーキテクチャではNix設定の適用をサポートしていません。"

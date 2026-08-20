@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>souhait0614/renovate-config",
+    ":assignAndReview(souhait0614)"
+  ],
+  "nix": {
+    "enabled": true
+  }
+}
