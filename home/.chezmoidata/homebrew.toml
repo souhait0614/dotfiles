@@ -8,7 +8,7 @@ casks = [
   "audacity",
   "azookey",
   "kgarner7/feishin/feishin",
-  "firefox",
+  "firefox@developer-edition",
   "ghostty",
   "google-japanese-ime",
   "iina",
