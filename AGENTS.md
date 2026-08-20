@@ -29,9 +29,11 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
 - Edit `home/deno_scripts/karabiner/generate_config.ts` or its
   `base_config.json`, not the generated `~/.config/karabiner/karabiner.json`.
   Edit `home/dot_config/nix/packages/flake.nix.tmpl` for the Linux package
-  flake. `home/dot_config/nix/flake.lock` is a tracked source lock file; the
-  nix-darwin destination lock is refreshed by the apply script and should not
-  be edited in the rendered home directory.
+  flake. The source lock files are
+  `home/dot_config/nix/flake.lock` and `home/dot_config/nix-darwin/flake.lock`;
+  keep both in sync with their respective flakes. The nix-darwin destination
+  lock is refreshed by the apply script and should not be edited in the
+  rendered home directory.
 - The source uses age encryption configured by `home/.chezmoi.toml.tmpl`.
   Git profile files under `home/dot_config/git/profiles/` are encrypted and
   should remain encrypted; never add credentials, tokens, private keys, or
