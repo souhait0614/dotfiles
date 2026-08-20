@@ -65,9 +65,9 @@ inline = 'zsh-defer eval "$(zoxide init zsh --cmd cd)"'
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
 
-[plugins.local-zsh-completions]
-local = "~/.config/zsh/site-functions/"
-apply = ["defer", "fpath"]
+# [plugins.local-zsh-completions]
+# local = "~/.config/zsh/site-functions/"
+# apply = ["defer", "fpath"]
 
 {{ if eq .platform "darwin-arm64" -}}
 [plugins.orbstack]
