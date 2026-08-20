@@ -33,8 +33,9 @@ export GIT_EDITOR="${EDITOR}"
 {{ if eq .platform "darwin-arm64" -}}
 # SSH Agent
 export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
-{{ end -}}
+{{- end }}
 
 {{ if ne .brewCommand "" -}}
+# Homebrew
 eval "$("{{ .brewCommand }}" shellenv)"
-{{ end -}}
+{{- end }}
