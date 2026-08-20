@@ -29,13 +29,11 @@ encryption = "age"
   {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
   {{ $gitProfile = promptChoiceOnce . "git_profile" "Select git profile" $gitProfiles -}}
 
-  {{ if not $useSudo -}}
-    {{ $useHomebrew = promptBoolOnce . "use_homebrew" "Use Homebrew" -}}
-    {{ if $useHomebrew -}}
-      {{ $brewCommand = promptStringOnce . "brew_command" "Enter the brew command" $brewCommand -}}
-    {{ else -}}
-      {{ $brewCommand = "" -}}
-    {{ end -}}
+  {{ $useHomebrew = promptBoolOnce . "use_homebrew" "Use Homebrew" -}}
+  {{ if $useHomebrew -}}
+    {{ $brewCommand = promptStringOnce . "brew_command" "Enter the brew command" $brewCommand -}}
+  {{ else -}}
+    {{ $brewCommand = "" -}}
   {{ end -}}
 {{ else -}}
   {{ $useSudo = true -}}

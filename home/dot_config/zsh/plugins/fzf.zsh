@@ -7,8 +7,3 @@ function fzf_history() {
   zle reset-prompt
 }
 zle -N fzf_history
-
-# Ctrl+R
-bindkey '^R' fzf_history
-# Up arrow
-bindkey '^[[A' fzf_history
