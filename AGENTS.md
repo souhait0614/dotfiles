@@ -21,19 +21,18 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
   sets private permissions, `.tmpl` is rendered as a Go template, and scripts in
   `home/.chezmoiscripts/` run in filename order according to their `run_once_`
   or `run_onchange_` prefix. The scripts install or upgrade Lix, install
-  Homebrew on Apple Silicon macOS, apply nix-darwin on Apple Silicon macOS,
-  build the Linux CLI profile, and generate Karabiner-Elements configuration
-  on Apple Silicon macOS.
+  Homebrew on Apple Silicon macOS, apply the unified Nix configuration for the
+  current platform, and generate Karabiner-Elements configuration on Apple
+  Silicon macOS.
 - Do not commit credentials, tokens, or private keys. The `private_` prefix
   controls destination permissions; it does not make repository content secret.
 - Edit `home/deno_scripts/karabiner/generate_config.ts` or its
   `base_config.json`, not the generated `~/.config/karabiner/karabiner.json`.
-  Edit `home/dot_config/nix/packages/flake.nix.tmpl` for the Linux package
-  flake. The source lock files are
-  `home/dot_config/nix/flake.lock` and `home/dot_config/nix-darwin/flake.lock`;
-  keep both in sync with their respective flakes. The nix-darwin destination
-  lock is refreshed by the apply script and should not be edited in the
-  rendered home directory.
+  Edit `home/dot_config/nix/flake.nix.tmpl` for the cross-platform package and
+  nix-darwin flake. Platform-specific source locks live at
+  `home/dot_config/nix/.flake-darwin.lock` and `.flake-linux.lock`; the rendered
+  lock is selected by `home/dot_config/nix/flake.lock.tmpl`. Do not edit the
+  rendered lock in the home directory.
 - The source uses age encryption configured by `home/.chezmoi.toml.tmpl`.
   Git profile files under `home/dot_config/git/profiles/` are encrypted and
   should remain encrypted; never add credentials, tokens, private keys, or

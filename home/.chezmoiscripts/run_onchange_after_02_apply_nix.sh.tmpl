@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# flake.nix hash: {{ include "dot_config/nix/flake.nix.tmpl" | sha256sum }}
+# packages hash: {{ .nix.packages | toJson | sha256sum }}
+{{ if eq .platform "darwin-arm64" -}}
+# flake.lock hash: {{ include "dot_config/nix/.flake-darwin.lock" | sha256sum }}
+# configuration.nix hash: {{ include "dot_config/nix/configuration.nix.tmpl" | sha256sum }}
+# fonts hash: {{ .nix.fonts | toJson | sha256sum }}
+# homebrew hash: {{ .homebrew | toJson | sha256sum }}
+{{ else if or (eq .platform "linux-arm64") (eq .platform "linux-x86_64") -}}
+# flake.lock hash: {{ include "dot_config/nix/.flake-linux.lock" | sha256sum }}
+{{ end -}}
+{{ if not (or (eq .platform "darwin-arm64") (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
+echo "このOS/アーキテクチャではNix設定の適用をサポートしていません。"
+exit 0
+{{ end -}}
+{{ if and (eq .platform "darwin-arm64") (not .useSudo) -}}
+echo "sudoの使用が許可されていないため、nix-darwinの適用をスキップします。"
+exit 0
+{{ end -}}
+
+if command -v nix >/dev/null 2>&1; then
+    nix_command="$(command -v nix)"
+elif [ -x /nix/var/nix/profiles/default/bin/nix ]; then
+    nix_command="/nix/var/nix/profiles/default/bin/nix"
+else
+{{ if and (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) (not .useSudo) -}}
+    echo "Lixがなくsudoの使用も許可されていないため、CLIパッケージのインストールをスキップします。"
+    exit 0
+{{ else -}}
+    echo "Lixが見つからないため、Nix設定を適用できません。" >&2
+    exit 1
+{{ end -}}
+fi
+
+config_dir="$HOME/.config/nix"
+{{ if eq .platform "darwin-arm64" -}}
+sudo_command=(sudo)
+if [[ -n "${NIX_CONFIG:-}" ]]; then
+    sudo_command+=(--preserve-env=NIX_CONFIG)
+fi
+
+"${sudo_command[@]}" "$nix_command" --extra-experimental-features "nix-command flakes" \
+    run "$config_dir#darwin-rebuild" -- \
+    switch --flake "$config_dir#{{ .chezmoi.hostname }}"
+{{ else if or (eq .platform "linux-arm64") (eq .platform "linux-x86_64") -}}
+profile_dir="$HOME/.local/state/nix/profiles"
+mkdir -p "$profile_dir"
+
+"$nix_command" --extra-experimental-features "nix-command flakes" \
+    build "$config_dir#default" --out-link "$profile_dir/dotfiles-cli"
+{{ end -}}

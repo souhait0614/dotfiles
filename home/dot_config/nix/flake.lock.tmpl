@@ -1,0 +1,5 @@
+{{ if eq .platform "darwin-arm64" -}}
+{{ include "dot_config/nix/.flake-darwin.lock" }}
+{{ else if or (eq .platform "linux-arm64") (eq .platform "linux-x86_64") -}}
+{{ include "dot_config/nix/.flake-linux.lock" }}
+{{ end -}}

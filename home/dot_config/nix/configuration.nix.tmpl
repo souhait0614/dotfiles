@@ -1,4 +1,4 @@
-{ pkgs, primaryUser, self, ... }:
+{ pkgs, primaryUser, self, sharedPackages, ... }:
 
 {
   nix = {
@@ -17,11 +17,7 @@
 
   users.users.${primaryUser}.home = "/Users/${primaryUser}";
 
-  environment.systemPackages = with pkgs; [
-{{- range .nix.packages }}
-    {{ . }}
-{{- end }}
-  ];
+  environment.systemPackages = sharedPackages;
 
   fonts.packages = with pkgs; [
 {{- range .nix.fonts }}

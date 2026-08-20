@@ -3,11 +3,7 @@
 ./deno_scripts
 
 {{ if ne .platform "darwin-arm64" -}}
-.config/nix-darwin
-{{ end -}}
-
-{{ if not (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
-.config/nix/packages
+.config/nix/configuration.nix
 {{ end -}}
 
 {{ if and (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}

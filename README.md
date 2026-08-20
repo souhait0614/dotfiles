@@ -39,11 +39,12 @@ OSとアーキテクチャの条件分岐には、`home/.chezmoi.toml.tmpl`で�
 ```sh
 # LinuxのCLIパッケージを再ビルドする
 mkdir -p "$HOME/.local/state/nix/profiles"
-nix build "$HOME/.config/nix/packages#default" \
+nix build "$HOME/.config/nix#default" \
   --out-link "$HOME/.local/state/nix/profiles/dotfiles-cli"
 
 # macOSのnix-darwin設定を手動で再適用する
-sudo darwin-rebuild switch --flake "$HOME/.config/nix-darwin#$(hostname -s)"
+sudo nix run "$HOME/.config/nix#darwin-rebuild" -- \
+  switch --flake "$HOME/.config/nix#$(hostname -s)"
 ```
 
 ## :miteru_sakananoonigiri:

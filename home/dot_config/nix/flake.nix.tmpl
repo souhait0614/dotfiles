@@ -1,0 +1,48 @@
+{
+  description = "souhait0614's cross-platform Nix configuration";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+{{ if eq .platform "darwin-arm64" }}
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+{{ end -}}
+  };
+
+  outputs = inputs@{ nixpkgs, self, ... }:
+    let
+      system = "{{ if eq .platform "darwin-arm64" }}aarch64-darwin{{ else if eq .platform "linux-arm64" }}aarch64-linux{{ else if eq .platform "linux-x86_64" }}x86_64-linux{{ else }}unsupported{{ end }}";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      sharedPackages = with pkgs; [
+{{- range .nix.packages }}
+        {{ . }}
+{{- end }}
+      ];
+    in
+    {
+      packages.${system} = {
+        default = pkgs.buildEnv {
+          name = "dotfiles-cli";
+          paths = sharedPackages;
+        };
+{{ if eq .platform "darwin-arm64" }}
+    darwin-rebuild = inputs.nix-darwin.packages.${system}.darwin-rebuild;
+{{ end -}}
+      };
+{{ if eq .platform "darwin-arm64" }}
+  darwinConfigurations.{{ .chezmoi.hostname | quote }} = inputs.nix-darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = {
+          inherit self sharedPackages;
+          primaryUser = {{ .chezmoi.username | quote }};
+        };
+        modules = [ ./configuration.nix ];
+      };
+{{ end -}}
+    };
+}
