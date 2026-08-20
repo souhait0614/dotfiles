@@ -1,5 +1,5 @@
 [tools]
-deno = "2.7.1"
+deno = "2.9.5"
 oxfmt = "0.63.0"
 
 [settings]
