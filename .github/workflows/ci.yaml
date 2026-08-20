@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Write ~/.chezmoi-encrypt-key.txt
+        run: echo "${{ secrets.CHEZMOI_ENCRYPT_KEY }}" > ~/.chezmoi-encrypt-key.txt
+
       - name: Run chezmoi apply
         run: sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --branch "$GITHUB_REF_NAME" -v ${{ github.repository_owner }}
         env:
@@ -35,6 +38,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Write ~/.chezmoi-encrypt-key.txt
+        run: echo "${{ secrets.CHEZMOI_ENCRYPT_KEY }}" > ~/.chezmoi-encrypt-key.txt
 
       - name: Run chezmoi apply
         run: sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --branch "$GITHUB_REF_NAME" -v ${{ github.repository_owner }}
