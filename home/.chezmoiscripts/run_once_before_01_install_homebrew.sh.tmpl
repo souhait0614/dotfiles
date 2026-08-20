@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-{{ if not .homebrew.install -}}
-echo "chezmoi dataで無効化されているため、Homebrewのインストールをスキップします。"
-exit 0
-{{ end -}}
-
 {{ if eq .platform "darwin-arm64" -}}
 {{ else -}}
-echo "HomebrewはApple Silicon Macでのみ使用します。"
+echo "HomebrewのインストールはApple Silicon Macでのみ行われます。"
 exit 0
 {{ end -}}
 

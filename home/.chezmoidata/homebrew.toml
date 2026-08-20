@@ -1,5 +1,4 @@
 [homebrew]
-install = true
 cleanup = "uninstall"
 brews = ["mole"]
 casks = [

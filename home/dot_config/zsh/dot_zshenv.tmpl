@@ -35,8 +35,6 @@ export GIT_EDITOR="${EDITOR}"
 export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
 {{ end -}}
 
-{{ if eq .platform "darwin-arm64" -}}
-if [[ -x {{ .brewCommand | quote }} ]]; then
-  eval "$("{{ .brewCommand }}" shellenv)"
-fi
+{{ if ne .brewCommand "" -}}
+eval "$("{{ .brewCommand }}" shellenv)"
 {{ end -}}

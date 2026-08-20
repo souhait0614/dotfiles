@@ -16,13 +16,27 @@ encryption = "age"
 
 {{ if eq $platform "darwin-arm64" -}}
   {{ $brewCommand = "/opt/homebrew/bin/brew" -}}
+{{ else if eq $platform "linux-x86_64" -}}
+  {{ $brewCommand = "/home/linuxbrew/.linuxbrew/bin/brew" -}}
+{{ else if eq $platform "linux-arm64" -}}
+  {{ $brewCommand = "/home/linuxbrew/.linuxbrew/bin/brew" -}}
 {{ end -}}
 
 {{- $gitProfiles := list "souhait" "work_a" "work_p" -}}
+{{- $useHomebrew := true -}}
 
 {{ if stdinIsATTY -}}
   {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
   {{ $gitProfile = promptChoiceOnce . "git_profile" "Select git profile" $gitProfiles -}}
+
+  {{ if not $useSudo -}}
+    {{ $useHomebrew = promptBoolOnce . "use_homebrew" "Use Homebrew" -}}
+    {{ if $useHomebrew -}}
+      {{ $brewCommand = promptStringOnce . "brew_command" "Enter the brew command" $brewCommand -}}
+    {{ else -}}
+      {{ $brewCommand = "" -}}
+    {{ end -}}
+  {{ end -}}
 {{ else -}}
   {{ $useSudo = true -}}
   {{ $gitProfile = "souhait" -}}
