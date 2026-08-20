@@ -5,6 +5,7 @@ encryption = "age"
   recipient = "age1uvqgl4l7z2d2v7ycnmr2xrzzy2qmyc397y3ryp5ur5uefw5t83jq6d527j"
 
 {{ $useSudo := false -}}
+{{ $gitProfile := "" -}}
 {{ $arch := .chezmoi.arch -}}
 
 {{ if eq $arch "amd64" -}}
@@ -17,13 +18,18 @@ encryption = "age"
   {{ $brewCommand = "/opt/homebrew/bin/brew" -}}
 {{ end -}}
 
+{{- $gitProfiles := list "souhait" "work_a" "work_p" -}}
+
 {{ if stdinIsATTY -}}
   {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
+  {{ $gitProfile = promptChoiceOnce . "git_profile" "Select git profile" $gitProfiles -}}
 {{ else -}}
   {{ $useSudo = true -}}
+  {{ $gitProfile = "souhait" -}}
 {{ end -}}
 
 [data]
   brew_command = {{ $brewCommand | quote }}
   platform = {{ $platform | quote }}
   useSudo = {{ $useSudo }}
+  gitProfile = {{ $gitProfile | quote }}

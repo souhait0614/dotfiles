@@ -13,3 +13,13 @@
 {{ if and (or (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 .ssh
 {{ end -}}
+
+{{ if ne .gitProfile "souhait" -}}
+.config/git/profiles/souhait.gitconfig
+{{ end -}}
+{{ if ne .gitProfile "work_a" -}}
+.config/git/profiles/work_a.gitconfig
+{{ end -}}
+{{ if ne .gitProfile "work_p" -}}
+.config/git/profiles/work_p.gitconfig
+{{ end -}}

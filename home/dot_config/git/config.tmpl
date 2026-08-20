@@ -1,14 +1,68 @@
-[commit]
-    gpgsign = {{ .git.signCommits }}
 [core]
     excludesfile = ~/.config/git/ignore
-{{ if .git.signCommits -}}
-[gpg]
-    format = {{ .git.signingFormat }}
-{{ end -}}
-[user]
-    name = {{ .git.userName | quote }}
-    email = {{ .git.userEmail | quote }}
-    {{ if .git.signCommits -}}
-    signingkey = {{ .git.signingKey | quote }}
+    autocrlf = input
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+    writeCommitGraph = true
+
+[pull]
+    ff = only
+
+[push]
+    default = simple
+    autoSetupRemote = true
+    useForceIfIncludes = true
+
+[rerere]
+    enabled = true
+    autoUpdate = true
+
+[merge]
+    conflictStyle = zdiff3
+
+[diff]
+    algorithm = histogram
+    colorMoved = zebra
+    mnemonicPrefix = true
+
+[column]
+    ui = auto
+
+[help]
+    autocorrect = prompt
+
+[checkout]
+    defaultRemote = origin
+
+[branch]
+    sort = -committerdate
+
+[log]
+    date = iso
+
+[commit]
+    verbose = true
+
+[rebase]
+    autostash = true
+    autosquash = true
+    missingCommitsCheck = error
+    updateRefs = true
+
+[status]
+    showStash = true
+
+[include]
+    {{ if eq .gitProfile "souhait" -}}
+    path = ./profiles/souhait.gitconfig
+    {{ end -}}
+    {{ if eq .gitProfile "work_a" -}}
+    path = ./profiles/work_a.gitconfig
+    {{ end -}}
+    {{ if eq .gitProfile "work_p" -}}
+    path = ./profiles/work_p.gitconfig
     {{ end -}}
