@@ -12,7 +12,7 @@ echo "HomebrewはApple Silicon Macでのみ使用します。"
 exit 0
 {{ end -}}
 
-if command -v brew >/dev/null 2>&1 || [ -x {{ .brew_command | quote }} ]; then
+if command -v brew >/dev/null 2>&1 || [ -x {{ .brewCommand | quote }} ]; then
     echo "Homebrewはインストール済みです。"
     exit 0
 fi

@@ -36,7 +36,7 @@ export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bit
 {{ end -}}
 
 {{ if eq .platform "darwin-arm64" -}}
-if [[ -x {{ .brew_command | quote }} ]]; then
-  eval "$("{{ .brew_command }}" shellenv)"
+if [[ -x {{ .brewCommand | quote }} ]]; then
+  eval "$("{{ .brewCommand }}" shellenv)"
 fi
 {{ end -}}

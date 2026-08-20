@@ -10,7 +10,7 @@ source root is `home/`, as configured by `.chezmoiroot`.
 - Keep version and tool data in the concern-specific files under
   `home/.chezmoidata/`. Common CLI packages and macOS fonts belong in
   `nix.toml`; Homebrew is only for macOS-specific formulae and applications.
-- Keep machine-derived values (`platform`, `useSudo`, and `brew_command`) in
+- Keep machine-derived values (`platform`, `useSudo`, and `brewCommand`) in
   `home/.chezmoi.toml.tmpl`. Use `.platform` elsewhere instead of branching on
   `.chezmoi.os` or `.chezmoi.arch`. Supported values are `darwin-arm64`,
   `linux-arm64`, and `linux-x86_64`; Intel macOS is unsupported.
