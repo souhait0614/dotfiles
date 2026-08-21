@@ -30,7 +30,6 @@ OSとアーキテクチャの条件分岐には、`home/.chezmoi.toml.tmpl`で�
 
 - `versions.toml`: Renovateなどで更新するバージョン
 - `lix.toml`: Lixの配布元
-- `git.toml`: Git/GitHubのユーザー情報と署名設定
 - `homebrew.toml`: Homebrewの導入、tap、formula、cask設定
 - `nix.toml`: macOSとLinuxで共通利用するCLIパッケージとmacOSフォント
 
