@@ -60,7 +60,7 @@
       AppleKeyboardUIMode = 0;
     };
     dock = {
-      tilesize = 33;
+      tilesize = 32;
       "show-recents" = false;
       mineffect = "scale";
       "minimize-to-application" = true;
@@ -102,6 +102,9 @@
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;
         DSDontWriteUSBStores = true;
+      };
+      "com.apple.dock" = {
+        size-immutable = true;
       };
       "com.apple.AppleMultitouchTrackpad" = {
         Clicking = 0;
