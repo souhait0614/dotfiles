@@ -22,7 +22,7 @@ Macはサポート対象外です。
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
 ```
 
-初期化時にセットアップでsudoを使用するかを尋ねます。sudoを許可しない場合、Lix、Homebrew、nix-darwinの新規インストールはスキップされます。
+初期化時にセットアップのプリセットを選択します。`Custom`を選択すると、sudoの使用とHomebrewのコマンドを手動で設定できます。sudoを許可しない場合、Lix、Homebrew、nix-darwinの新規インストールはスキップされます。
 
 バージョンやツールごとの設定は`home/.chezmoidata/`、端末ごとの値はchezmoiの設定ファイル内の`data`で管理します。共通CLIはNix、macOSアプリとmacOS固有ツールはHomebrewで管理します。
 

@@ -17,24 +17,36 @@ encryption = "age"
 {{ if eq $platform "darwin-arm64" -}}
   {{ $brewCommand = "/opt/homebrew/bin/brew" -}}
 {{ else if eq $platform "linux-x86_64" -}}
-  {{ $brewCommand = "/home/linuxbrew/.linuxbrew/bin/brew" -}}
+  {{ $brewCommand = "" -}}
 {{ else if eq $platform "linux-arm64" -}}
-  {{ $brewCommand = "/home/linuxbrew/.linuxbrew/bin/brew" -}}
+  {{ $brewCommand = "" -}}
 {{ end -}}
 
 {{- $gitProfiles := list "souhait" "work_a" "work_p" -}}
-{{- $useHomebrew := true -}}
+{{- $presets := list "macOS_root" "Linux_root" "Linux_nonroot" "Custom" -}}
 
 {{ if stdinIsATTY -}}
-  {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
-  {{ $gitProfile = promptChoiceOnce . "git_profile" "Select git profile" $gitProfiles -}}
-
-  {{ $useHomebrew = promptBoolOnce . "use_homebrew" "Use Homebrew" -}}
-  {{ if $useHomebrew -}}
-    {{ $brewCommand = promptStringOnce . "brew_command" "Enter the brew command" $brewCommand -}}
-  {{ else -}}
+  {{ $preset := promptChoiceOnce . "preset" "Select setup preset" $presets -}}
+  {{ if eq $preset "macOS_root" -}}
+    {{ $useSudo = true -}}
+    {{ $brewCommand = "/opt/homebrew/bin/brew" -}}
+  {{ else if eq $preset "Linux_root" -}}
+    {{ $useSudo = true -}}
     {{ $brewCommand = "" -}}
+  {{ else if eq $preset "Linux_nonroot" -}}
+    {{ $useSudo = false -}}
+    {{ $brewCommand = printf "%s/homebrew/bin/brew" (env "HOME") -}}
+  {{ else -}}
+    {{ $useSudo = promptBoolOnce . "use_sudo" "Allow setup commands to use sudo" -}}
+    {{ $useHomebrew := promptBoolOnce . "use_homebrew" "Use Homebrew" -}}
+    {{ if $useHomebrew -}}
+      {{ $brewCommand = promptStringOnce . "brew_command" "Enter the brew command" $brewCommand -}}
+    {{ else -}}
+      {{ $brewCommand = "" -}}
+    {{ end -}}
   {{ end -}}
+
+  {{ $gitProfile = promptChoiceOnce . "git_profile" "Select git profile" $gitProfiles -}}
 {{ else -}}
   {{ $useSudo = true -}}
   {{ $gitProfile = "souhait" -}}
