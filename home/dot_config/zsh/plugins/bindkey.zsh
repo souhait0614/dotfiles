@@ -16,4 +16,11 @@ bindkey "^[^?"        backward-kill-word
 # Ctrl+R
 bindkey '^R' fzf_history
 # Up
+# NOTE: SSH先や TERM の違いで上矢印が normal mode (^[[A) と
+# application mode (^[OA) のどちらで送られるか変わるため、両方と
+# terminfo の kcuu1 を保険としてバインドする
 bindkey '^[[A' fzf_history
+bindkey '^[OA' fzf_history
+if [[ -n "${terminfo[kcuu1]}" ]]; then
+  bindkey "${terminfo[kcuu1]}" fzf_history
+fi
