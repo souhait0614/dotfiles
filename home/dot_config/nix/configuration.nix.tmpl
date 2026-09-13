@@ -51,6 +51,13 @@
       {{ . | quote }}
 {{- end }}
     ];
+{{- if ne (env "CI") "true" }}
+    masApps = {
+  {{- range $name, $id := .homebrew.masApps }}
+      {{ $name | quote }} = {{ $id }};
+  {{- end }}
+    };
+{{- end }}
   };
 
   system.defaults = {

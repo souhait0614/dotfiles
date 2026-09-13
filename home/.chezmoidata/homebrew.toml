@@ -1,15 +1,13 @@
 [homebrew]
 cleanup = "uninstall"
-brews = ["mole"]
+brews = ["mas", "mole"]
 casks = [
   "android-platform-tools",
   "apparency",
   "audacity",
   "azookey",
-  "kgarner7/feishin/feishin",
   "firefox@developer-edition",
   "ghostty@tip",
-  "google-japanese-ime",
   "iina",
   "inkscape",
   "karabiner-elements",
@@ -26,4 +24,11 @@ casks = [
   "li-na/zed-i18n/zed-i18n",
   "zen",
 ]
-taps = ["artginzburg/tap", "kgarner7/feishin", "li-na/zed-i18n"]
+taps = ["artginzburg/tap", "li-na/zed-i18n"]
+
+[homebrew.masApps]
+Amphetamine = 937984704
+Bitwarden = 1352778147
+"Draw Things" = 6444050820
+RunCatNeo = 6757801838
+Shelv = 6762255865
