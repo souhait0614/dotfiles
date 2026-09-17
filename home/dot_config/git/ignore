@@ -18,3 +18,6 @@
 
 # Finder custom folder icons
 Icon?
+
+# Claude Code
+**/.claude/settings.local.json
