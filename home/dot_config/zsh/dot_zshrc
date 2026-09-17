@@ -55,3 +55,7 @@ setopt no_beep
 unsetopt list_types
 # スラッシュを区切り文字に含める
 export WORDCHARS="${WORDCHARS//\/}"
+
+if [[ -r "${ZDOTDIR}/.zshrc.local" ]]; then
+  source "${ZDOTDIR}/.zshrc.local"
+fi

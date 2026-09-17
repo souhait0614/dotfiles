@@ -39,3 +39,7 @@ export SSH_AUTH_SOCK="${HOME}/Library/Containers/com.bitwarden.desktop/Data/.bit
 # Homebrew
 eval "$("{{ .brewCommand }}" shellenv)"
 {{- end }}
+
+if [[ -r "${ZDOTDIR}/.zshenv.local" ]]; then
+  source "${ZDOTDIR}/.zshenv.local"
+fi
