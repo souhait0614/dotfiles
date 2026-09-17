@@ -10,6 +10,7 @@ packages = [
   "git",
   "gnupg",
   "herdr",
+  "lazygit",
   "mise",
   "nano",
   "ripgrep",
