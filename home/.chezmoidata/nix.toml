@@ -9,6 +9,7 @@ packages = [
   "gh",
   "git",
   "gnupg",
+  "herdr",
   "mise",
   "nano",
   "ripgrep",
