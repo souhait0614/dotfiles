@@ -13,6 +13,9 @@
     configurationRevision = self.rev or self.dirtyRev or null;
     primaryUser = primaryUser;
     stateVersion = 7;
+    activationScripts.disableSpotlight.text = ''
+      /usr/bin/mdutil -a -i off >/dev/null 2>&1 || true
+    '';
   };
 
   users.users.${primaryUser}.home = "/Users/${primaryUser}";
@@ -71,6 +74,14 @@
       "show-recents" = false;
       mineffect = "scale";
       "minimize-to-application" = true;
+      showLaunchpadGestureEnabled = false;
+      showDesktopGestureEnabled = true;
+    };
+    trackpad = {
+      Clicking = false;
+      TrackpadThreeFingerDrag = false;
+      TrackpadRightClick = true;
+      TrackpadFourFingerPinchGesture = 0;
     };
     finder = {
       ShowPathbar = true;
@@ -80,31 +91,7 @@
     };
     CustomUserPreferences = {
       "com.apple.Spotlight" = {
-        MenuItemHidden = 0;
-        EnabledPreferenceRules = [
-          "Custom.relatedContents"
-          "System.menuItems"
-          "System.iphoneApps"
-        ];
-        PasteboardHistoryEnabled = true;
-      };
-      "com.apple.symbolichotkeys" = {
-        AppleSymbolicHotKeys = {
-          "64" = {
-            enabled = true;
-            value = {
-              parameters = [ 65535 49 1048576 ];
-              type = "standard";
-            };
-          };
-          "65" = {
-            enabled = true;
-            value = {
-              parameters = [ 65535 49 1572864 ];
-              type = "standard";
-            };
-          };
-        };
+        MenuItemHidden = 1;
       };
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;
@@ -112,11 +99,6 @@
       };
       "com.apple.dock" = {
         size-immutable = true;
-      };
-      "com.apple.AppleMultitouchTrackpad" = {
-        Clicking = 0;
-        TrackpadThreeFingerDrag = 0;
-        TrackpadRightClick = 1;
       };
     };
   };

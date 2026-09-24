@@ -23,8 +23,9 @@ casks = [
   "xcodes-app",
   "li-na/zed-i18n/zed-i18n",
   "zen",
+  "abue-ammar/tinycast/tinycast",
 ]
-taps = ["artginzburg/tap", "li-na/zed-i18n"]
+taps = ["abue-ammar/tinycast", "artginzburg/tap", "li-na/zed-i18n"]
 
 [homebrew.masApps]
 Amphetamine = 937984704
