@@ -35,6 +35,10 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
   corresponding inputs in the main flake template. The rendered lock is
   selected by `home/dot_config/nix/flake.lock.tmpl`. Do not edit the rendered
   lock in the home directory.
+- Agent skills are managed with apm. Edit `home/dot_config/apm/apm.yml`; `~/.apm`
+  is a chezmoi-managed symlink to `~/.config/apm`. After changing skill
+  dependencies, run `apm install -g` and
+  `chezmoi re-add ~/.config/apm/apm.lock.yaml` to refresh the committed lockfile.
 - The source uses age encryption configured by `home/.chezmoi.toml.tmpl`.
   Git profile files under `home/dot_config/git/profiles/` are encrypted and
   should remain encrypted; never add credentials, tokens, private keys, or

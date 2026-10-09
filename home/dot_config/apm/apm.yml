@@ -1,0 +1,7 @@
+name: souhait-agent-skills
+version: 0.1.0
+targets:
+  - agent-skills
+dependencies:
+  apm:
+    - nanaism/yomiyasu#v1.1.0

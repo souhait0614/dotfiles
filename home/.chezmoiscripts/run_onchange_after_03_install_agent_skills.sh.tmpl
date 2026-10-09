@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# apm.yml hash: {{ include "dot_config/apm/apm.yml" | sha256sum }}
+# apm.lock.yaml hash: {{ include "dot_config/apm/apm.lock.yaml" | sha256sum }}
+
+{{ if not (or (eq .platform "darwin-arm64") (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
+echo "このOS/アーキテクチャではagent skillsの更新をサポートしていません。"
+exit 0
+{{ end -}}
+
+if command -v apm >/dev/null 2>&1; then
+    apm_command="$(command -v apm)"
+elif [ -x "${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/apm" ]; then
+    apm_command="${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/apm"
+elif [ -x /run/current-system/sw/bin/apm ]; then
+    apm_command="/run/current-system/sw/bin/apm"
+else
+{{ if not .useSudo -}}
+    echo "Nix設定が適用されていないため、agent skillsの更新をスキップします。"
+    exit 0
+{{ else -}}
+    echo "apmが見つからないため、agent skillsを更新できません。" >&2
+    exit 1
+{{ end -}}
+fi
+
+echo "agent skillsを更新します..."
+"${apm_command}" install -g

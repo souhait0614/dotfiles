@@ -12,6 +12,7 @@
 - Lix
 - nix-darwin（macOSのみ）
 - Homebrew
+- apm（agent skills）
 
 Apple Silicon Macと、arm64またはx86_64のLinuxに対応しています。Intel
 Macはサポート対象外です。
@@ -32,6 +33,25 @@ OSとアーキテクチャの条件分岐には、`home/.chezmoi.toml.tmpl`で�
 - `lix.toml`: Lixの配布元
 - `homebrew.toml`: Homebrewの導入、tap、formula、cask設定
 - `nix.toml`: macOSとLinuxで共通利用するCLIパッケージとmacOSフォント
+
+## agent skills
+
+エージェントのskillは[apm](https://microsoft.github.io/apm/)で管理します。実体は`~/.config/apm/`に置き、`~/.apm/`はそこへのシンボリックリンクです。依存として追加したskillは`chezmoi apply`時に`~/.agents/skills/`へ展開されます。このディレクトリはCopilot、Claude Code、Codex、Cursorなどのクライアントが共通で読み取ります。
+
+自作のskillは`home/dot_config/apm/skills/<name>/SKILL.md`に置きます。依存の追加や更新は次のコマンドで行います。
+
+```sh
+# skillを追加する
+apm install -g <owner/repo>
+
+# 依存を最新版へ更新する
+apm update -g
+
+# apm.ymlとapm.lock.yamlをリポジトリへ取り込む
+chezmoi re-add ~/.config/apm/apm.yml ~/.config/apm/apm.lock.yaml
+```
+
+`home/dot_config/apm/apm.yml`の依存バージョンはRenovateでも更新されます。その場合は`chezmoi apply`でskillを再展開したあと、`chezmoi re-add ~/.config/apm/apm.lock.yaml`でlockfileを取り込みます。
 
 ## メモ
 
