@@ -13,6 +13,10 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
   `home/.chezmoidata/`: `versions.toml`, `lix.toml`, `nix.toml`, and
   `homebrew.toml`. Common CLI packages and macOS fonts belong in `nix.toml`;
   Homebrew is only for macOS-specific formulae and applications.
+- The Lix version is pinned in `home/.chezmoidata/versions.toml` under `[lix]`.
+  Renovate updates both `version` and `upgradeScriptVersion` through the
+  `customManagers` entry in `renovate.json`, which looks up release tags on
+  `https://git.lix.systems`; keep the two keys in sync when editing by hand.
 - Keep machine-derived values (`platform`, `useSudo`, and `brewCommand`) in
   `home/.chezmoi.toml.tmpl`. Use `.platform` elsewhere instead of branching on
   `.chezmoi.os` or `.chezmoi.arch`. Supported values are `darwin-arm64`,

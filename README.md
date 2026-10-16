@@ -30,7 +30,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
 OSとアーキテクチャの条件分岐には、`home/.chezmoi.toml.tmpl`で生成する`platform`を使用します。対応する値は`darwin-arm64`、`linux-arm64`、`linux-x86_64`です。
 
 - `versions.toml`: Renovateなどで更新するバージョン
-- `lix.toml`: Lixの配布元
+- `lix.toml`: Lixの配布元。Lix本体のバージョンは`versions.toml`の`[lix]`にあり、`git.lix.systems`のタグを参照するRenovateのcustom managerが`version`と`upgradeScriptVersion`をまとめて更新します
 - `homebrew.toml`: Homebrewの導入、tap、formula、cask設定
 - `nix.toml`: macOSとLinuxで共通利用するCLIパッケージとmacOSフォント
 

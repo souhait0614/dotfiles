@@ -6,5 +6,20 @@
   ],
   "nix": {
     "enabled": true
-  }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Lixのバージョン",
+      "managerFilePatterns": ["/^home/\\.chezmoidata/versions\\.toml$/"],
+      "matchStrings": [
+        "\\[lix\\](?:[\\s\\S]*?)version = \"(?<currentValue>[^\"]+)\"",
+        "upgradeScriptVersion = \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "forgejo-tags",
+      "registryUrlTemplate": "https://git.lix.systems",
+      "packageNameTemplate": "lix-project/lix",
+      "versioningTemplate": "semver-coerced"
+    }
+  ]
 }
