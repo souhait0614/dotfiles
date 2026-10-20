@@ -7,6 +7,13 @@
   "nix": {
     "enabled": true
   },
+  "packageRules": [
+    {
+      "description": "Lix 2.96.0 breaks socket-activated nix-daemon on systemd (Accept=yes passes LISTEN_FDNAMES=connection), so stay on 2.95.x until fixed upstream",
+      "matchPackageNames": ["lix-project/lix"],
+      "allowedVersions": "<2.96.0"
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
