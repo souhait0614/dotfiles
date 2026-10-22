@@ -4,10 +4,15 @@ set -euo pipefail
 # generate_config.ts hash: {{ include "deno_scripts/karabiner/generate_config.ts" | sha256sum }}
 {{ if eq .platform "darwin-arm64" -}}
 
-mise_command="/run/current-system/sw/bin/mise"
+mise_command=""
+if command -v mise >/dev/null 2>&1; then
+	mise_command="$(command -v mise)"
+elif [ -x "${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/mise" ]; then
+	mise_command="${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/mise"
+fi
 
-if [[ ! -x "${mise_command}" ]]; then
-	echo "miseが見つかりません: ${mise_command}" >&2
+if [ -z "${mise_command}" ]; then
+	echo "miseが見つからないため、Karabiner-Elementsの設定を生成できません。" >&2
 	exit 1
 fi
 
