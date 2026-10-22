@@ -8,20 +8,34 @@ echo "このOS/アーキテクチャではagent skillsの更新をサポート�
 exit 0
 {{ end -}}
 
-if command -v apm >/dev/null 2>&1; then
+mise_command=""
+if command -v mise >/dev/null 2>&1; then
+    mise_command="$(command -v mise)"
+elif [ -x "${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/mise" ]; then
+    mise_command="${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/mise"
+elif [ -x /run/current-system/sw/bin/mise ]; then
+    mise_command="/run/current-system/sw/bin/mise"
+fi
+
+apm_command=""
+if [ -n "${mise_command}" ]; then
+    if ! apm_command="$("${mise_command}" which apm 2>/dev/null)"; then
+        echo "apmがインストールされていないため、miseでインストールします..."
+        "${mise_command}" install apm
+        apm_command="$("${mise_command}" which apm)"
+    fi
+elif command -v apm >/dev/null 2>&1; then
     apm_command="$(command -v apm)"
-elif [ -x "${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/apm" ]; then
-    apm_command="${HOME}/.local/state/nix/profiles/dotfiles-cli/bin/apm"
-elif [ -x /run/current-system/sw/bin/apm ]; then
-    apm_command="/run/current-system/sw/bin/apm"
-else
-{{ if not .useSudo -}}
-    echo "Nix設定が適用されていないため、agent skillsの更新をスキップします。"
+fi
+
+if [ -z "${apm_command}" ]; then
+{{- if not .useSudo }}
+    echo "miseが見つからないため、agent skillsの更新をスキップします。"
     exit 0
-{{ else -}}
-    echo "apmが見つからないため、agent skillsを更新できません。" >&2
+{{- else }}
+    echo "miseが見つからないため、agent skillsを更新できません。" >&2
     exit 1
-{{ end -}}
+{{- end }}
 fi
 
 echo "agent skillsを更新します..."

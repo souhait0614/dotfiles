@@ -1,6 +1,5 @@
 [nix]
 packages = [
-  "apm-cli",
   "bat",
   "cacert",
   "chezmoi",
