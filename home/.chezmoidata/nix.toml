@@ -2,7 +2,9 @@
 packages = [
   "apm-cli",
   "bat",
+  "cacert",
   "chezmoi",
+  "curl",
   "eza",
   "fastfetch",
   "ffmpeg",
