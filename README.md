@@ -47,11 +47,9 @@ apm install -g <owner/repo>
 # 依存を最新版へ更新する
 apm update -g
 
-# apm.ymlとapm.lock.yamlをリポジトリへ取り込む
-chezmoi re-add ~/.apm/apm.yml ~/.apm/apm.lock.yaml
+# apm.ymlをリポジトリへ取り込む
+chezmoi re-add ~/.apm/apm.yml
 ```
-
-`home/dot_apm/apm.yml`の依存バージョンはRenovateでも更新されます。その場合は`chezmoi apply`でskillを再展開したあと、`chezmoi re-add ~/.apm/apm.lock.yaml`でlockfileを取り込みます。
 
 ## メモ
 

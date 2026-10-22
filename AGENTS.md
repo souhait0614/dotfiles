@@ -41,8 +41,7 @@ CI runs `chezmoi init --apply` on macOS and Linux for pushes that change
   lock in the home directory.
 - Agent skills are managed with apm. Edit `home/dot_apm/apm.yml`; `~/.apm` is the
   user-scope package directory. After changing skill dependencies, run
-  `apm install -g` and `chezmoi re-add ~/.apm/apm.lock.yaml` to refresh the
-  committed lockfile.
+  `apm install -g`.
 - The source uses age encryption configured by `home/.chezmoi.toml.tmpl`.
   Git profile files under `home/dot_config/git/profiles/` are encrypted and
   should remain encrypted; never add credentials, tokens, private keys, or

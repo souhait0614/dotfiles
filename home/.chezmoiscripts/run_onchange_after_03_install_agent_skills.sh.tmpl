@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # apm.yml hash: {{ include "dot_apm/apm.yml" | sha256sum }}
-# apm.lock.yaml hash: {{ include "dot_apm/apm.lock.yaml" | sha256sum }}
 
 {{ if not (or (eq .platform "darwin-arm64") (eq .platform "linux-arm64") (eq .platform "linux-x86_64")) -}}
 echo "このOS/アーキテクチャではagent skillsの更新をサポートしていません。"
