@@ -5,4 +5,4 @@ targets:
   - claude
 dependencies:
   apm:
-    - nanaism/yomiyasu#v2.0.2
+    - nanaism/yomiyasu#v2.5.0
