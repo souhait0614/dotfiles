@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-eval "$(mise activate zsh --shims)"
-
-if [[ -r "${ZDOTDIR}/.zprofile.local" ]]; then
-  source "${ZDOTDIR}/.zprofile.local"
-fi
