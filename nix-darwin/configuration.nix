@@ -1,6 +1,7 @@
 { pkgs, lib, primaryUser, userHome, profile, isCI, self, ... }:
 
 let
+  fontsData = builtins.fromTOML (builtins.readFile ./fonts.toml);
   homebrewData = builtins.fromTOML (builtins.readFile ./homebrew.toml);
 in
 assert lib.assertMsg (primaryUser != "" && userHome != "")
@@ -25,6 +26,8 @@ assert lib.assertMsg (builtins.elem profile [ "souhait" "work_a" "work_p" ])
   };
 
   users.users.${primaryUser}.home = userHome;
+
+  fonts.packages = map (name: lib.getAttrFromPath (lib.splitString "." name) pkgs) fontsData.packages;
 
   homebrew = {
     enable = true;

@@ -90,7 +90,9 @@ bash scripts/migrate.sh
 
 - [mise.toml](./mise.toml): dotfiles のリンク・テンプレート配置と bootstrap タスクの定義
 - [home/.config/mise/conf.d/default/mise.toml](./home/.config/mise/conf.d/default/mise.toml): 共通で利用する CLI ツールとシェルエイリアス
-- [nix-darwin/](./nix-darwin/): macOS のシステム設定と Homebrew パッケージ（[homebrew.toml](./nix-darwin/homebrew.toml)）
+- [nix-darwin/](./nix-darwin/): macOS のシステム設定・フォント・Homebrew パッケージ
+  - [fonts.toml](./nix-darwin/fonts.toml): Nix の属性名で指定するフォント一覧。`.` 区切りの属性名にも対応
+  - [homebrew.toml](./nix-darwin/homebrew.toml): Homebrew パッケージ一覧
 - [home/.apm/apm.yml](./home/.apm/apm.yml): エージェント用の skill 定義
 
 ## 開発メモ
