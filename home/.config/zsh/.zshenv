@@ -7,6 +7,10 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+if [[ "$OSTYPE" == darwin* ]]; then
+  export SSH_AUTH_SOCK="$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+fi
+
 path=(
   "$HOME/.local/bin"(N-/)
   $path

@@ -33,6 +33,8 @@ mise bootstrap
 
 配置したファイルの一部はこのリポジトリへのシンボリックリンクになるため、セットアップ後もリポジトリを残してください。
 
+macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_SOCK` は Zsh の起動時に設定されます。
+
 ### プロファイルの切り替え
 
 端末ごとの差分はルートの [mise.souhait.toml](./mise.souhait.toml)、[mise.work_a.toml](./mise.work_a.toml)、[mise.work_p.toml](./mise.work_p.toml) で管理します。選択したプロファイルは `~/.config/mise/miserc.local.toml` に保存されます。
