@@ -53,6 +53,23 @@ mise set --file /tmp/encrypted-profile.toml --age-encrypt \
   < ~/.config/git/profile.gitconfig
 ```
 
+### キー割り当て
+
+macOS のキー割り当ては [scripts/karabiner.mts](./scripts/karabiner.mts) で管理します。[karabiner.ts](https://github.com/evan-liu/karabiner.ts) を使い、bootstrap 時に Karabiner-Elements の設定を生成します。
+
+- Caps Lock → Control
+- Fn → Command
+- 左 Command の単押しで英数、右 Command の単押しでかなに切り替え
+- Command + Q の2度押しで終了
+
+変更後は次のコマンドで依存関係を導入し、設定を再生成できます。Linux ではスキップします。
+
+```sh
+mise run karabiner
+```
+
+生成時に `~/.config/karabiner/karabiner.json` 全体を置き換えるため、GUI 側だけで加えた変更は保持されません。
+
 ### 旧環境（chezmoi + Nix）からの移行
 
 旧 chezmoi のソースディレクトリの外にこのリポジトリをクローンして実行します。旧設定を `~/.local/state/dotfiles-migration/backup.*` に退避したあと、nix-darwin と Nix/Lix をアンインストールして新環境をセットアップします。
@@ -88,6 +105,9 @@ mise exec -- pnpm install --frozen-lockfile
 # フォーマットの実行・確認
 mise exec -- pnpm fmt
 mise exec -- pnpm fmt:check
+
+# TypeScript の型検査
+mise exec -- pnpm typecheck
 
 # macOS 設定・シェルプラグイン・agent skills の再適用
 mise run bootstrap

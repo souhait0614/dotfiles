@@ -39,9 +39,19 @@ lix_version = "{{ read_file(path='nix-darwin/lix-version') | trim }}"
 
 [tasks.bootstrap]
 description = "macOS 設定・シェルプラグイン・agent skills のセットアップ"
-run = ["bash scripts/setup-nix-darwin.sh", "sheldon lock", "apm install -g"]
+run = ["bash scripts/setup-nix-darwin.sh", { task = "karabiner" }, "sheldon lock", "apm install -g"]
 interactive = true
 env = { DOTFILES_LIX_VERSION = "{{ vars.lix_version }}" }
+
+[tasks.karabiner]
+description = "macOS のキー割り当てを生成して適用"
+run = '''
+if [ "$(uname -s)" = Darwin ]; then
+  pnpm install --frozen-lockfile && pnpm karabiner
+else
+  printf '%s\n' "Linux: Karabiner-Elements setup is not applicable."
+fi
+'''
 
 [tasks.profile]
 description = "プロファイルの選択と適用"
