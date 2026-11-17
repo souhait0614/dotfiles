@@ -1,0 +1,9 @@
+[vars]
+profile = "souhait"
+git_profile = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBwYUdRRUZHYUpCVGphL21jOUxPMEdoRUY3Z1pBbE94M3JGZ3pXRThGcGtNClJOMXpRb0hOdTFqMDhDcWhtc1RyVUJBajRmQjc0QU9FY1dpUFZ6MXdtMWsKLT4gImRqI3otZ3JlYXNlIE0kXlE1IFxjCklNNmQvY1MvNnBoOFFRbndBNUhIZHFGRUIraVdOTHVnRk1vCi0tLSBxZ3J6dTdDZlp0dmk2dEVkQTlqdmV2ZkRIZmtDVzREenJEbXdjWEdyY2Q0Co88Z/aBetKKoNtTRxpedt01HRIrgTtljvOqUCWC2jkalE0DqVCAXcnpjpD4BCWmrrQSsecJmZNVhSPw+fTyatEubzxq5/vl2WKg8g/mNFsNFrb+/SUKKGEOv2AZffWBUusZaP9/QpL4T2mfTIDZWBngEKqWrWg041XR+Ldtw/GjjprtMSmRP5ijNw+tTQxlwWSmtkRvRV3ljWe8PYtdeq3Fh+oM9HIERdowi7yP8dr2koVP" }
+
+[env]
+DOTFILES_PROFILE = "{{ vars.profile }}"
+
+[dotfiles]
+"~/.config/git/profile.gitconfig" = { source = "home/.config/git/profile.gitconfig.tera", mode = "template", permissions = "0600" }

@@ -1,0 +1,10 @@
+pre-commit:
+  commands:
+    oxfmt:
+      run: mise exec -- pnpm fmt --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: mise exec -- pnpm commitlint --edit "{1}"

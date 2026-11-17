@@ -1,0 +1,70 @@
+name: Dotfiles CI
+
+on:
+  push:
+    paths:
+      - ".github/workflows/ci.yaml"
+      - "home/**"
+      - "mise*.toml"
+      - "mise*.lock"
+      - "nix-darwin/**"
+      - "renovate.json"
+      - "scripts/**"
+  pull_request:
+    paths:
+      - ".github/workflows/ci.yaml"
+      - "home/**"
+      - "mise*.toml"
+      - "mise*.lock"
+      - "nix-darwin/**"
+      - "renovate.json"
+      - "scripts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply_test:
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    name: apply_test_${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-latest
+          - platform: macos
+            os: macos-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up mise
+        uses: jdx/mise-action@236a21c3b91f5db6d4e174b348674a0f0caac06d # v5.2.9
+        with:
+          install: false
+          cache: false
+          env: false
+
+      - name: Bootstrap
+        env:
+          MISE_AGE_KEY: ${{ secrets.DOTFILES_ENCRYPT_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          NIX_CONFIG: access-tokens = github.com=${{ github.token }}
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+        run: bash scripts/bootstrap.sh souhait --yes

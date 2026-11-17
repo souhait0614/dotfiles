@@ -1,0 +1,45 @@
+shell = "zsh"
+apply = ["defer"]
+
+[templates]
+defer = "{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}"
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ["source"]
+
+[plugins.compinit]
+inline = """
+autoload -Uz compinit
+zsh-defer -a -t0.01 compinit -d "$XDG_STATE_HOME/zsh/zcompdump"
+"""
+
+[plugins.fzf-tab]
+github = "aloxaf/fzf-tab"
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma/fast-syntax-highlighting"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+
+[plugins.zsh-replace-multiple-dots]
+github = "momo-lab/zsh-replace-multiple-dots"
+
+[plugins.pure]
+github = "sindresorhus/pure"
+use = ["async.zsh", "pure.zsh"]
+# defer するとプロンプトが反映されないため即時読み込む
+apply = ["source"]
+
+[plugins.zoxide]
+inline = 'zsh-defer eval "$(zoxide init zsh --cmd cd)"'
+
+[plugins.local-plugins]
+local = "~/.config/zsh/plugins/"

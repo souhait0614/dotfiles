@@ -1,0 +1,50 @@
+min_version = "2026.11.8"
+
+[tools]
+node = "24.22.3"
+pnpm = "12.21.0"
+
+[settings]
+experimental = true
+
+[settings.age]
+key_file = "~/.dotfiles-encrypt-key.txt"
+
+[dotfiles]
+"~/.zshenv" = { source = "home/.zshenv", mode = "symlink" }
+"~/.config/zsh" = { source = "home/.config/zsh", mode = "symlink-each" }
+"~/.config/mise" = { source = "home/.config/mise", mode = "symlink-each" }
+"~/.config/sheldon" = { source = "home/.config/sheldon", mode = "symlink-each" }
+"~/.config/git" = { source = "home/.config/git", mode = "symlink-each", exclude = [
+  "profile.gitconfig.tera",
+] }
+"~/.apm" = { source = "home/.apm", mode = "copy" }
+"~/.claude" = { source = "home/.claude", mode = "copy" }
+"~/.copilot" = { source = "home/.copilot", mode = "copy" }
+"~/.ssh" = { permissions = "0700" }
+"~/.ssh/config" = { source = "home/.ssh/config.tera", mode = "template", permissions = "0600" }
+"~/.ssh/conf.d" = { permissions = "0700" }
+"~/.ssh/conf.d/00-github" = { source = "home/.ssh/conf.d/00-github.tera", mode = "template", permissions = "0600" }
+"~/.ssh/conf.d/00-ssh" = { source = "home/.ssh/conf.d/00-ssh", mode = "copy", permissions = "0600" }
+
+[bootstrap.hooks]
+pre-dotfiles = 'bash scripts/bootstrap.sh --check {{ mise_env | default(value=[]) | join(sep=",") | quote }}'
+
+# ZDOTDIR を ~/.config/zsh にしているため、有効化は Zsh の設定ファイル側で行う
+[bootstrap.mise_shell_activate]
+zsh = false
+
+[vars]
+lix_version = "{{ read_file(path='nix-darwin/lix-version') | trim }}"
+
+[tasks.bootstrap]
+description = "macOS 設定・シェルプラグイン・agent skills のセットアップ"
+run = ["bash scripts/setup-nix-darwin.sh", "sheldon lock", "apm install -g"]
+env = { DOTFILES_LIX_VERSION = "{{ vars.lix_version }}" }
+
+[tasks.profile]
+description = "プロファイルの選択と適用"
+run = "bash scripts/bootstrap.sh"
+raw_args = true
+interactive = true
+env = { DOTFILES_MISE_BIN = "{{ mise_bin }}" }

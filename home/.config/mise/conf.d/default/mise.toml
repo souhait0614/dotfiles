@@ -1,0 +1,28 @@
+[tool_alias]
+# Linux arm64 バイナリが glibc 2.38 以降を要求するため、互換性のある PyPI 経由で導入する
+apm = "pypi:apm-cli"
+
+[tools]
+# グローバルの Python と分離するため apm 専用のバージョンを指定する
+apm = { version = "0.33.0", python = "3.12.12" }
+bat = "0.26.1"
+eza = "0.23.5"
+fastfetch = "2.71.0"
+fzf = "0.75.0"
+gh = "2.104.0"
+herdr = "0.9.5"
+lazygit = "0.66.3"
+ripgrep = "15.2.0"
+sheldon = "0.8.5"
+uv = "0.12.10"
+zoxide = "0.10.0"
+
+[shell_alias]
+ls = "eza --git"
+la = "eza -a --git"
+ll = "eza -ahl --git"
+lt = "eza -T -L 3 -a -I 'node_modules|.git|.cache'"
+lta = "eza -T -a -I 'node_modules|.git|.cache' --color=always | less -r"
+l = "clear && ls"
+tree = "lt"
+zed = "zed-i18n"

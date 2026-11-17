@@ -1,0 +1,46 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>souhait0614/renovate-config", ":assignAndReview(souhait0614)"],
+  "nix": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Lix 2.96.0 の systemd ソケット起動不具合が修正されるまで 2.95.x に固定する",
+      "matchPackageNames": ["lix-project/lix"],
+      "allowedVersions": "<2.96.0"
+    },
+    {
+      "description": "apm の tool_alias に合わせて PyPI を参照する",
+      "matchManagers": ["mise"],
+      "matchDepNames": ["apm"],
+      "overrideDatasource": "pypi",
+      "overridePackageName": "apm-cli",
+      "extractVersion": "^v?(?<version>.+)$",
+      "versioning": "pep440"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Lix のバージョン",
+      "managerFilePatterns": ["/^nix-darwin/lix-version$/"],
+      "matchStrings": ["^\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)\\s*$"],
+      "datasourceTemplate": "forgejo-tags",
+      "registryUrlTemplate": "https://git.lix.systems",
+      "packageNameTemplate": "lix-project/lix",
+      "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
+      "description": "apm 用の Python バージョン",
+      "managerFilePatterns": ["/^home/\\.config/mise/conf\\.d/default/mise\\.toml$/"],
+      "matchStrings": [
+        "(?:^|\\n)apm\\s*=\\s*\\{[^}\\r\\n]*\\bpython\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "python-version",
+      "depNameTemplate": "python",
+      "versioningTemplate": "python"
+    }
+  ]
+}
