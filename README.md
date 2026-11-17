@@ -57,6 +57,10 @@ mise set --file /tmp/encrypted-profile.toml --age-encrypt \
 
 旧 chezmoi のソースディレクトリの外にこのリポジトリをクローンして実行します。旧設定を `~/.local/state/dotfiles-migration/backup.*` に退避したあと、nix-darwin と Nix/Lix をアンインストールして新環境をセットアップします。
 
+Nix/Lix の削除はシステム全体と他のユーザーに影響します。Nix ストアはバックアップされません。削除に使うインストーラーと記録は `~/.local/state/dotfiles-migration/uninstaller.*` に保存されます。中断後に未マウントの Nix Store ボリュームが残っている場合は、旧環境の削除を完了してから再実行してください。
+
+macOS の `/etc/pam.d/sudo_local` に既存の通常ファイルがある場合は、内容を確認してから別名に退避してください。既存の退避ファイルを上書きしないでください。
+
 ```sh
 # 変更内容を確認
 bash scripts/migrate.sh --dry-run

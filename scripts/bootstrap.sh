@@ -13,6 +13,12 @@ validate_profile() {
   esac
 }
 
+check_sudo_local() {
+  if [[ "$(uname -s)" = Darwin && -e /etc/pam.d/sudo_local && ! -L /etc/pam.d/sudo_local ]]; then
+    profile_error "Inspect /etc/pam.d/sudo_local and move it to /etc/pam.d/sudo_local.before-nix-darwin before continuing; do not overwrite an existing backup."
+  fi
+}
+
 choose_profile() {
   local profile="${1:-}" choice
   if [[ -z "$profile" ]]; then
@@ -37,6 +43,7 @@ bootstrap_main() {
   case "${1:-}" in
     --check)
       validate_profile "${2:-${MISE_ENV:-}}"
+      check_sudo_local
       return
       ;;
     --help|-h)

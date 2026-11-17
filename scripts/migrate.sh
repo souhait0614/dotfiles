@@ -108,6 +108,13 @@ nix_is_present() {
   [[ -d /nix/store || -e /nix/receipt.json ]]
 }
 
+nix_volume_is_present() {
+  local volumes
+  volumes="$(/usr/sbin/diskutil apfs list -plist | /usr/bin/plutil -p -)" \
+    || die "Could not inspect APFS volumes; refusing to continue."
+  grep -q '"Name" => "Nix Store"' <<< "$volumes"
+}
+
 darwin_is_present() {
   [[ -e /run/current-system || -e /Library/LaunchDaemons/org.nixos.activate-system.plist ]]
 }
@@ -126,6 +133,8 @@ inspect_nix() {
     done
     [[ -x "$nix_installer" && -f /nix/receipt.json ]] \
       || die "No installer receipt/uninstaller. Follow your Nix installer's uninstall instructions, then rerun."
+  elif [[ "$os" = Darwin ]] && nix_volume_is_present; then
+    die "An unmounted Nix Store volume remains. Complete its uninstall before rerunning; do not start a new Nix installation."
   fi
   if [[ "$os" = Darwin ]] && darwin_is_present; then
     darwin_present=true
@@ -150,7 +159,12 @@ uninstall_darwin() {
 }
 
 uninstall_nix() {
-  sudo "$nix_installer" uninstall --no-confirm
+  local recovery_dir
+  recovery_dir="$(mktemp -d "$state_dir/uninstaller.XXXXXX")"
+  cp "$nix_installer" "$recovery_dir/nix-installer"
+  cp /nix/receipt.json "$recovery_dir/receipt.json"
+  printf 'Uninstaller and receipt saved at: %s\n' "$recovery_dir"
+  sudo "$recovery_dir/nix-installer" uninstall --no-confirm "$recovery_dir/receipt.json"
 }
 
 remove_nix() {
@@ -163,14 +177,19 @@ remove_nix() {
     printf '%s\n' "Uninstalling Nix/Lix with its saved installer receipt."
     uninstall_nix
     ! nix_is_present || die "Nix/Lix still exists; cleanup is not complete."
+    if [[ "$os" = Darwin ]] && nix_volume_is_present; then
+      die "The Nix Store APFS volume still exists; complete its uninstall before rerunning."
+    fi
   fi
 }
 
 backup_path() {
   local target="$1" destination="$backup_dir/${1#"$HOME/"}"
   [[ -e "$target" || -L "$target" ]] || return 0
-  [[ ! -e "$destination" && ! -L "$destination" ]] \
-    || die "Backup already exists; refusing to overwrite it: $destination"
+  if [[ -e "$destination" || -L "$destination" ]]; then
+    destination="$(mktemp -d "$backup_dir/recreated.XXXXXX")/${1#"$HOME/"}"
+    printf 'Backing up a recreated path separately: %s\n' "$target"
+  fi
   mkdir -p "$(dirname "$destination")"
   mv "$target" "$destination"
 }
@@ -282,6 +301,7 @@ main() {
   printf '%s\n' "  ensure a mise executable outside /nix, then run mise bootstrap"
   "$dry_run" && return 0
 
+  check_sudo_local
   if ! "$assume_yes"; then
     [[ -t 0 ]] || die "Use --yes for a non-interactive migration."
     printf '%s' "Type MIGRATE to continue: "
