@@ -1,0 +1,61 @@
+[core]
+    excludesfile = ~/.config/git/ignore
+    autocrlf = input
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+    writeCommitGraph = true
+
+[pull]
+    ff = only
+
+[push]
+    default = simple
+    autoSetupRemote = true
+    useForceIfIncludes = true
+
+[rerere]
+    enabled = true
+    autoUpdate = true
+
+[merge]
+    conflictStyle = zdiff3
+
+[diff]
+    algorithm = histogram
+    colorMoved = zebra
+    mnemonicPrefix = true
+
+[column]
+    ui = auto
+
+[help]
+    autocorrect = prompt
+
+[checkout]
+    defaultRemote = origin
+
+[branch]
+    sort = -committerdate
+
+[log]
+    date = iso
+
+[commit]
+    verbose = true
+
+[rebase]
+    autostash = true
+    autosquash = true
+    missingCommitsCheck = error
+    updateRefs = true
+
+[status]
+    showStash = true
+
+[include]
+    path = ./alias.gitconfig
+    path = ./profile.gitconfig

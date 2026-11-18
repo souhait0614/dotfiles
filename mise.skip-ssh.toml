@@ -1,0 +1,6 @@
+[dotfiles]
+"~/.ssh" = { enabled = false }
+"~/.ssh/config" = { enabled = false }
+"~/.ssh/conf.d" = { enabled = false }
+"~/.ssh/conf.d/00-github" = { enabled = false }
+"~/.ssh/conf.d/00-ssh" = { enabled = false }

@@ -1,0 +1,47 @@
+name: Commitlint
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js and pnpm
+        uses: jdx/mise-action@236a21c3b91f5db6d4e174b348674a0f0caac06d # v5.2.9
+        with:
+          install_args: node pnpm
+          cache: false
+          env: false
+
+      - name: Install dependencies
+        run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Lint pushed commits
+        if: github.event_name == 'push'
+        run: mise exec -- pnpm commitlint --last --verbose
+
+      - name: Lint commits in PR
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: mise exec -- pnpm commitlint --from "$BASE_SHA" --to "$HEAD_SHA" --verbose

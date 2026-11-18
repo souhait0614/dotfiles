@@ -1,0 +1,9 @@
+[vars]
+profile = "work_p"
+git_profile = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBibEIvRXNyK2M5NWdsS3RmczZGQklkYUcwcmkvaXlFRTJXMlpNUlVZQTFvCm9HMFk4OUxKUTh6dUJwN0UrYXo3SHVlSUovb0d5SlBzZzR3TGdRbUxJWEEKLT4gdnZXKUArI3UtZ3JlYXNlIGUnQV4KRjlQcVNNRXlwUmYrNmlXa2VoRE92WjM4dU9tYkQrVXM4MER1OVAxSEUyL0VWa09QU2VPK2syNFFUMDI5NVNoZgowd2xkZ2EydHBQeUg0MW05LzI4Y1BIYmo3ZGdKT1BDdHBmZmJYdlBtCi0tLSBvVG5NWFVkU2pRNHg5dnZ0ZjM1L3VqRkQzVUVuUm1vVENmVEt2QWZzYmFRCsdCfVuaaGwcTvn9P5lO0UbNnGYTskuFiWbLYmePb+/rEEvZH639iYmxkHu5Kr4exY1irg4r5Y079MrUGagMoYQfy45L30vXm22n6oH2uuWfy7h7JXrEXdRRhmomO7RIIJ2x6rp7pczzNBpRv5kVXvEfTyd++WCr3927XVYVaQ36kngiMTu2r5dJJpuMKmk37qLsATiGpl4oWyjYnRI" }
+
+[env]
+DOTFILES_PROFILE = "{{ vars.profile }}"
+
+[dotfiles]
+"~/.config/git/profile.gitconfig" = { source = "home/.config/git/profile.gitconfig.tera", mode = "template", permissions = "0600" }

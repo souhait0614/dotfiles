@@ -1,0 +1,3 @@
+allowBuilds:
+  # prepare スクリプトで導入するため postinstall は無効化する
+  lefthook: false

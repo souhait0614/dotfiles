@@ -1,2 +1,0 @@
-[alias]
-  push-f = "push --force-with-lease"

@@ -1,13 +1,8 @@
-# Deno
-# https://deno.com/
-
-# Cache directory (when using project-local DENO_DIR)
-# https://docs.deno.com/runtime/fundamentals/setup/#deno_dir
-.deno/
-
-# Coverage reports
-# https://docs.deno.com/runtime/reference/cli/coverage/
-coverage/
-*.lcov
-
 .DS_Store
+*.local.toml
+node_modules/
+
+.dotfiles-encrypt-key.txt
+home/.config/mise/age.txt
+home/.config/git/profile.gitconfig
+home/.config/git/profiles/

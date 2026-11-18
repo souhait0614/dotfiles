@@ -4,64 +4,127 @@
 
 ## これは何
 
-すえ用の [chezmoi](https://www.chezmoi.io) なdotfilesです。
+すえ用の [mise](https://mise.jdx.dev/) な dotfiles です。
 
 以下の環境を管理します。
 
-- chezmoi
-- Lix
-- nix-darwin（macOSのみ）
-- Homebrew
+- mise
+- Lix（macOS のみ）
+- nix-darwin（macOS のみ）
+- Homebrew（macOS のみ）
 - apm（agent skills）
 
-Apple Silicon Macと、arm64またはx86_64のLinuxに対応しています。Intel
-Macはサポート対象外です。
+Apple Silicon Mac と、arm64 または x86_64 の Linux（WSL を含む）に対応しています。Intel Mac と NixOS はサポート対象外です。
 
 ## 使い方
 
+mise 2026.11.8 以降と Bash・curl・Git を用意し、復号鍵をあらかじめ `~/.dotfiles-encrypt-key.txt` に配置します。macOS では Command Line Tools（`xcode-select --install`）も必要です。
+
 ```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply souhait0614
+# souhait・work_a・work_p から対話で選択して適用
+bash scripts/bootstrap.sh
+
+# プロファイルを指定して適用
+bash scripts/bootstrap.sh souhait
+
+# 保存済みのプロファイルで再適用
+mise bootstrap
 ```
 
-初期化時にセットアップのプリセットを選択します。`Custom`を選択すると、sudoの使用とHomebrewのコマンドを手動で設定できます。sudoを許可しない場合、Lix、Homebrew、nix-darwinの新規インストールはスキップされます。
+配置したファイルの一部はこのリポジトリへのシンボリックリンクになるため、セットアップ後もリポジトリを残してください。
 
-バージョンやツールごとの設定は`home/.chezmoidata/`、端末ごとの値はchezmoiの設定ファイル内の`data`で管理します。共通CLIはNix、macOSアプリとmacOS固有ツールはHomebrewで管理します。
+macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_SOCK` は Zsh の起動時に設定されます。
 
-OSとアーキテクチャの条件分岐には、`home/.chezmoi.toml.tmpl`で生成する`platform`を使用します。対応する値は`darwin-arm64`、`linux-arm64`、`linux-x86_64`です。
+### WSL
 
-- `versions.toml`: Renovateなどで更新するバージョン
-- `lix.toml`: Lixの配布元。Lix本体のバージョンは`versions.toml`の`[lix]`にあり、`git.lix.systems`のタグを参照するRenovateのcustom managerが`version`と`upgradeScriptVersion`をまとめて更新します
-- `homebrew.toml`: Homebrewの導入、tap、formula、cask設定
-- `nix.toml`: macOSとLinuxで共通利用するCLIパッケージとmacOSフォント
+シンボリックリンクやファイル権限を扱うため、ホームディレクトリとチェックアウトは `/mnt/c` などの Windows ドライブではなく、WSL の Linux ファイルシステム上に置いてください。mise・Bash・curl・Git は WSL 内に用意し、Zsh を使う場合は Zsh もインストールしてください。
 
-## agent skills
+`bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` は WSL では `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
 
-エージェントのskillは[apm](https://microsoft.github.io/apm/)で管理します。`~/.apm/`がapmのユーザースコープパッケージです。シンボリックリンクを扱えない環境があるため、`~/.apm/`は通常のディレクトリとして配置します。依存として追加したskillは`chezmoi apply`時に`~/.agents/skills/`へ展開されます。このディレクトリはCopilot、Claude Code、Codex、Cursorなどのクライアントが共通で読み取ります。
+`--yes`、`--dry-run`、端末入力のない実行では、指定がなければ SSH をスキップします。WSL 専用の `~/.ssh` に適用する場合は `DOTFILES_SSH=apply bash scripts/bootstrap.sh souhait --yes` と指定できます。`DOTFILES_SSH=skip` を指定すると、対話なしで SSH をスキップします。どちらの指定も移行スクリプトで使えます。
 
-自作のskillは`home/dot_apm/skills/<name>/SKILL.md`に置きます。依存の追加や更新は次のコマンドで行います。
+`mise bootstrap` による再適用では保存済みのプロファイルと SSH の選択を使います。WSL で選択をまだ保存していない場合や変更する場合は、`bash scripts/bootstrap.sh souhait` を実行してください。
+
+### プロファイルの切り替え
+
+端末ごとの差分はルートの [mise.souhait.toml](./mise.souhait.toml)、[mise.work_a.toml](./mise.work_a.toml)、[mise.work_p.toml](./mise.work_p.toml) で管理します。選択したプロファイルは `~/.config/mise/miserc.local.toml` に保存されます。
 
 ```sh
-# skillを追加する
-apm install -g <owner/repo>
+# 対話で選択して切り替え
+mise run profile
 
-# 依存を最新版へ更新する
-apm update -g
-
-# apm.ymlをリポジトリへ取り込む
-chezmoi re-add ~/.apm/apm.yml
+# プロファイルを指定して切り替え
+mise run profile work_a
 ```
 
-## メモ
+各プロファイルの `vars.git_profile` は mise の age 暗号化機能で暗号化しており、適用時に `~/.config/git/profile.gitconfig` へ復号・展開されます。Git 設定を更新する場合は次のコマンドで再暗号化し、該当プロファイルの `[vars]` を更新します。
 
 ```sh
-# LinuxのCLIパッケージを再ビルドする
-mkdir -p "$HOME/.local/state/nix/profiles"
-nix build "$HOME/.config/nix#default" \
-  --out-link "$HOME/.local/state/nix/profiles/dotfiles-cli"
+mise set --file /tmp/encrypted-profile.toml --age-encrypt \
+  --age-key-file ~/.dotfiles-encrypt-key.txt --stdin git_profile \
+  < ~/.config/git/profile.gitconfig
+```
 
-# macOSのnix-darwin設定を手動で再適用する
-sudo nix run "$HOME/.config/nix#darwin-rebuild" -- \
-  switch --flake "$HOME/.config/nix#$(hostname -s)"
+### キー割り当て
+
+macOS のキー割り当ては [scripts/karabiner.mts](./scripts/karabiner.mts) で管理します。[karabiner.ts](https://github.com/evan-liu/karabiner.ts) を使い、bootstrap 時に Karabiner-Elements の設定を生成します。
+
+- Caps Lock → Control
+- Fn → Command
+- 左 Command の単押しで英数、右 Command の単押しでかなに切り替え
+- Command + Q の2度押しで終了
+
+変更後は次のコマンドで依存関係を導入し、設定を再生成できます。Linux ではスキップします。
+
+```sh
+mise run karabiner
+```
+
+生成時に `~/.config/karabiner/karabiner.json` 全体を置き換えるため、GUI 側だけで加えた変更は保持されません。
+
+### 旧環境（chezmoi + Nix）からの移行
+
+旧 chezmoi のソースディレクトリの外にこのリポジトリをクローンして実行します。旧設定を `~/.local/state/dotfiles-migration/backup.*` に退避したあと、nix-darwin と Nix/Lix をアンインストールして新環境をセットアップします。
+
+Nix/Lix の削除はシステム全体と他のユーザーに影響します。Nix ストアはバックアップされません。削除に使うインストーラーと記録は `~/.local/state/dotfiles-migration/uninstaller.*` に保存されます。中断後に未マウントの Nix Store ボリュームが残っている場合は、旧環境の削除を完了してから再実行してください。
+
+macOS の `/etc/pam.d/sudo_local` に既存の通常ファイルがある場合は、内容を確認してから別名に退避してください。既存の退避ファイルを上書きしないでください。
+
+```sh
+# 変更内容を確認
+bash scripts/migrate.sh --dry-run
+
+# 移行を実行
+bash scripts/migrate.sh
+```
+
+## 構成
+
+- [mise.toml](./mise.toml): dotfiles のリンク・テンプレート配置と bootstrap タスクの定義
+- [home/.config/mise/conf.d/default/mise.toml](./home/.config/mise/conf.d/default/mise.toml): 共通で利用する CLI ツールとシェルエイリアス
+- [nix-darwin/](./nix-darwin/): macOS のシステム設定・フォント・Homebrew パッケージ
+  - [fonts.toml](./nix-darwin/fonts.toml): Nix の属性名で指定するフォント一覧。`.` 区切りの属性名にも対応
+  - [homebrew.toml](./nix-darwin/homebrew.toml): Homebrew パッケージ一覧
+- [home/.apm/apm.yml](./home/.apm/apm.yml): エージェント用の skill 定義
+
+## 開発メモ
+
+コミットメッセージの検査（commitlint）とフォーマット（oxfmt）には Node.js と pnpm を使います。依存関係を導入すると Lefthook の Git フックが有効になります。
+
+```sh
+# 開発用ツールと Git フックの導入
+mise install node pnpm
+mise exec -- pnpm install --frozen-lockfile
+
+# フォーマットの実行・確認
+mise exec -- pnpm fmt
+mise exec -- pnpm fmt:check
+
+# TypeScript の型検査
+mise exec -- pnpm typecheck
+
+# macOS 設定・シェルプラグイン・agent skills の再適用
+mise run bootstrap
 ```
 
 ## :miteru_sakananoonigiri:
