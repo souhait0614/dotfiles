@@ -1,1 +1,1 @@
-packages = ["ibm-plex.sans-jp", "monaspace", "nerd-fonts.monaspace"]
+packages = ["ibm-plex.sans-jp", "monaspace", "moralerspace", "nerd-fonts.monaspace"]
