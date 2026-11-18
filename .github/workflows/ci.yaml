@@ -67,6 +67,10 @@ jobs:
           cache: false
           env: false
 
+      - name: Refresh Homebrew on macOS
+        if: matrix.platform == 'macos'
+        run: brew update
+
       - name: Bootstrap
         env:
           MISE_AGE_KEY: ${{ secrets.DOTFILES_ENCRYPT_KEY }}

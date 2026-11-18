@@ -7,7 +7,7 @@
 - [bootstrap.sh](./scripts/bootstrap.sh) は `souhait`、`work_a`、`work_p` のいずれかを選び、`mise -E <profile> bootstrap --save-env` で `~/.config/mise/miserc.local.toml` に保存する。`pre-dotfiles` フックでプロファイルを検査し、macOS では未管理の `/etc/pam.d/sudo_local` が通常ファイルとして残っていれば適用を止める。プロファイルを増やすときは、`mise.<profile>.toml` に加えて `bootstrap.sh` の選択・検査と、[setup-nix-darwin.sh](./scripts/setup-nix-darwin.sh)、[configuration.nix](./nix-darwin/configuration.nix) の許可リストを更新する。
 - WSL では bootstrap と移行で SSH の適用可否を選び、非対話時は既定でスキップする。選択は `skip-ssh` または `apply-ssh` をプロファイルに追加して保存する。スキップ時は移行の退避対象から SSH を外し、[mise.skip-ssh.toml](./mise.skip-ssh.toml) で権限だけを管理する項目も含めて無効にする。SSH の配置項目を追加するときは無効化する項目も更新する。
 - bootstrap のタスクは macOS のシステム設定、Karabiner 設定の生成、`sheldon lock`、`apm install -g` の順に実行する。macOS 専用の処理は Linux でスキップする。`interactive = true` は `sudo` の端末入力に必要なので維持する。`mise run bootstrap` はこのタスクだけを再実行し、dotfiles の配置には `mise bootstrap` を使う。
-- [bootstrap CI](./.github/workflows/ci.yaml) は Linux と macOS で `bash scripts/bootstrap.sh souhait --yes` を実行する。`DOTFILES_ENCRYPT_KEY` を `MISE_AGE_KEY` として渡し、fork の PR と Dependabot はスキップする。macOS ではシステム設定を実際に適用し、`CI=true` では App Store アプリだけを Homebrew の導入対象から外す。[commitlint CI](./.github/workflows/commitlint.yaml) は別に動き、push の最新コミットまたは PR のコミット範囲を検査する。
+- [bootstrap CI](./.github/workflows/ci.yaml) は Linux と macOS で `bash scripts/bootstrap.sh souhait --yes` を実行する。`DOTFILES_ENCRYPT_KEY` を `MISE_AGE_KEY` として渡し、fork の PR と Dependabot はスキップする。macOS では、nix-darwin が Homebrew の自動更新を無効にしているため、適用前に `brew update` でランナーのパッケージ情報を更新する。`CI=true` では App Store アプリだけを Homebrew の導入対象から外す。[commitlint CI](./.github/workflows/commitlint.yaml) は別に動き、push の最新コミットまたは PR のコミット範囲を検査する。
 
 ## 開発メモ
 
