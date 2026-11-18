@@ -39,11 +39,11 @@ macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_
 
 シンボリックリンクやファイル権限を扱うため、ホームディレクトリとチェックアウトは `/mnt/c` などの Windows ドライブではなく、WSL の Linux ファイルシステム上に置いてください。mise・Bash・curl・Git は WSL 内に用意し、Zsh を使う場合は Zsh もインストールしてください。
 
-`bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` は、WSL では `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
+`bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` は WSL では `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
 
 `--yes`、`--dry-run`、端末入力のない実行では、指定がなければ SSH をスキップします。WSL 専用の `~/.ssh` に適用する場合は `DOTFILES_SSH=apply bash scripts/bootstrap.sh souhait --yes` と指定できます。`DOTFILES_SSH=skip` を指定すると、対話なしで SSH をスキップします。どちらの指定も移行スクリプトで使えます。
 
-`mise bootstrap` による再適用では、保存済みのプロファイルと SSH の選択を使います。WSL で選択をまだ保存していない場合や変更する場合は、`bash scripts/bootstrap.sh souhait` を実行してください。
+`mise bootstrap` による再適用では保存済みのプロファイルと SSH の選択を使います。WSL で選択をまだ保存していない場合や変更する場合は、`bash scripts/bootstrap.sh souhait` を実行してください。
 
 ### プロファイルの切り替え
 
