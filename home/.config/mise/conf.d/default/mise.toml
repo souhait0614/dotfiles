@@ -1,6 +1,8 @@
 [tool_alias]
 # Linux arm64 バイナリが glibc 2.38 以降を要求するため、互換性のある PyPI 経由で導入する
 apm = "pypi:apm-cli"
+# 公式 GitHub Releases にバイナリがないため、conda-forge のビルド済みパッケージを使う
+tokei = "conda:tokei"
 
 [tools]
 # グローバルの Python と分離するため apm 専用のバージョンを指定する
@@ -13,6 +15,7 @@ gh = "2.104.0"
 lazygit = "0.66.3"
 ripgrep = "15.2.0"
 sheldon = "0.8.5"
+tokei = { version = "15.0.0", channel = "conda-forge" }
 uv = "0.12.10"
 zoxide = "0.10.0"
 

@@ -18,6 +18,13 @@
       "overridePackageName": "apm-cli",
       "extractVersion": "^v?(?<version>.+)$",
       "versioning": "pep440"
+    },
+    {
+      "description": "tokei の tool_alias に合わせて conda-forge を参照する",
+      "matchManagers": ["mise"],
+      "matchDepNames": ["tokei"],
+      "overrideDatasource": "conda",
+      "overridePackageName": "conda-forge/tokei"
     }
   ],
   "customManagers": [
