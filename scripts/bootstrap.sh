@@ -61,6 +61,26 @@ check_sudo_local() {
   fi
 }
 
+check_zsh() {
+  if ! command -v zsh >/dev/null 2>&1; then
+    printf '%s\n' "Warning: zsh is not installed. Install zsh and set it as your login shell." >&2
+    return
+  fi
+  case "${SHELL:-}" in
+    /nix/*|/run/current-system/*|"$HOME/.nix-profile/"*|"${XDG_STATE_HOME:-$HOME/.local/state}/nix/"*)
+      printf '%s\n' "Warning: Recommend setting a non-Nix zsh as your login shell with chsh." >&2
+      ;;
+    */zsh)
+      if [[ ! -x "$SHELL" ]]; then
+        printf '%s\n' "Warning: Recommend setting zsh as your login shell with chsh." >&2
+      fi
+      ;;
+    *)
+      printf '%s\n' "Warning: Recommend setting zsh as your login shell with chsh." >&2
+      ;;
+  esac
+}
+
 choose_profile() {
   local profile="${1:-}" choice
   if [[ -z "$profile" ]]; then
@@ -98,6 +118,7 @@ bootstrap_main() {
         profile_error "WSL: Run bash scripts/bootstrap.sh $profile to choose whether to manage ~/.ssh."
       fi
       check_sudo_local
+      check_zsh
       return
       ;;
     --help|-h)

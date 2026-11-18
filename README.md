@@ -18,7 +18,7 @@ Apple Silicon Mac と、arm64 または x86_64 の Linux（WSL を含む）に�
 
 ## 使い方
 
-mise 2026.11.8 以降と Bash・curl・Git を用意し、復号鍵をあらかじめ `~/.dotfiles-encrypt-key.txt` に配置します。macOS では Command Line Tools（`xcode-select --install`）も必要です。
+mise 2026.11.8 以降と Zsh・Bash・curl・Git を用意し、ログインシェルを Zsh に設定します。復号鍵はあらかじめ `~/.dotfiles-encrypt-key.txt` に配置してください。macOS では Command Line Tools（`xcode-select --install`）も必要です。
 
 ```sh
 # souhait・work_a・work_p から対話で選択して適用
@@ -37,7 +37,7 @@ macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_
 
 ### WSL
 
-シンボリックリンクやファイル権限を扱うため、ホームディレクトリとチェックアウトは `/mnt/c` などの Windows ドライブではなく、WSL の Linux ファイルシステム上に置いてください。mise・Bash・curl・Git は WSL 内に用意し、Zsh を使う場合は Zsh もインストールしてください。
+シンボリックリンクやファイル権限を扱うため、ホームディレクトリとチェックアウトは `/mnt/c` などの Windows ドライブではなく、WSL の Linux ファイルシステム上に置いてください。mise・Zsh・Bash・curl・Git は WSL 内に用意し、ログインシェルも WSL 内の Zsh に設定してください。
 
 `bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` は WSL では `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
 

@@ -302,7 +302,9 @@ main() {
     printf '%s\n' "Legacy cleanup already completed; only reapplying the new setup."
     nix_present=false
   fi
+  safe_path="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
   printf '%s\n' "  ensure a mise executable outside /nix, then run mise bootstrap"
+  PATH="$safe_path" check_zsh
   "$dry_run" && return 0
 
   check_sudo_local
@@ -314,7 +316,6 @@ main() {
   fi
   profile="$(choose_profile "$profile")"
 
-  safe_path="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
   for target in bash curl git; do
     candidate="$(PATH="$safe_path" command -v "$target")" \
       || die "Install $target with the system package manager before migrating."
@@ -345,7 +346,7 @@ main() {
     touch "$state_dir/cleanup-complete"
   fi
   bootstrap_current
-  printf 'Migration complete. Backups: %s\nOpen a new login shell to use the new environment.\n' "$backup_dir"
+  printf 'Migration complete. Backups: %s\nOpen a new Zsh login shell to use the new environment.\n' "$backup_dir"
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
