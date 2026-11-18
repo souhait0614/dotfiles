@@ -46,6 +46,7 @@ add_backup_path() {
   local retained=()
   case "$target" in
     "$HOME/.ssh/config"|"$HOME/.ssh/conf.d/00-github"|"$HOME/.ssh/conf.d/00-ssh")
+      [[ "$ssh_mode" != skip ]] || return 0
       ;;
     "$HOME/.ssh"|"$HOME/.ssh/"*|"$HOME/.gnupg"|"$HOME/.gnupg/"*|\
     "$HOME/.dotfiles-encrypt-key.txt"|"$HOME/.git-credentials"|"$HOME/.netrc"|\
@@ -234,18 +235,20 @@ bootstrap_current() {
   export XDG_STATE_HOME="$HOME/.local/state" XDG_CACHE_HOME="$HOME/.cache"
   export MISE_CONFIG_DIR="$HOME/.config/mise"
   "$mise_command" -C "$repo_root" trust "$repo_root/mise.toml"
-  "$mise_command" -C "$repo_root" -E "$profile" bootstrap --yes --save-env
+  run_bootstrap "$mise_command" "$repo_root" "$profile" "$ssh_mode" --yes
 }
 
 main() {
-  local arg dry_run=false assume_yes=false answer target candidate resolved profile
+  local arg dry_run=false assume_yes=false answer target candidate resolved profile="" ssh_mode
   local script_path="${BASH_SOURCE[0]}"
   for arg in "$@"; do
     case "$arg" in
       --dry-run) dry_run=true ;;
       --yes) assume_yes=true ;;
       --help|-h)
-        printf '%s\n' "Usage: bash scripts/migrate.sh [--dry-run] [--yes]"
+        printf '%s\n' \
+          "Usage: bash scripts/migrate.sh [--dry-run] [--yes]" \
+          "Set DOTFILES_SSH=skip or DOTFILES_SSH=apply to choose without prompting."
         return
         ;;
       *) die "Unknown option: $arg" ;;
@@ -262,7 +265,7 @@ main() {
   repo_root="$(CDPATH= cd "$(dirname "$script_path")/.." && pwd -P)"
   source "$repo_root/scripts/bootstrap.sh"
   if [[ -n "${MISE_ENV:-}" ]]; then
-    validate_profile "$MISE_ENV"
+    profile="$(profile_from_selection "$MISE_ENV")"
   fi
   config_home="${XDG_CONFIG_HOME:-"$HOME/.config"}"
   data_home="${XDG_DATA_HOME:-"$HOME/.local/share"}"
@@ -280,6 +283,7 @@ main() {
   fi
   [[ ! -f "$state_dir/cleanup-complete" || -n "$backup_dir" ]] \
     || die "Migration state is missing its backup directory; restore backup-dir before resuming."
+  ssh_mode="$(choose_ssh_mode "$@")"
   if [[ ! -f "$state_dir/cleanup-complete" ]]; then
     inspect_nix
     collect_backup_paths
@@ -308,7 +312,7 @@ main() {
     IFS= read -r answer
     [[ "$answer" = MIGRATE ]] || die "Migration cancelled."
   fi
-  profile="$(choose_profile "${MISE_ENV:-}")"
+  profile="$(choose_profile "$profile")"
 
   safe_path="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
   for target in bash curl git; do

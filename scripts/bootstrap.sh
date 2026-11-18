@@ -13,6 +13,48 @@ validate_profile() {
   esac
 }
 
+profile_from_selection() {
+  local selection="$1" profile="${1%%,*}"
+  validate_profile "$profile"
+  case "$selection" in
+    "$profile"|"$profile,skip-ssh"|"$profile,apply-ssh") printf '%s\n' "$profile" ;;
+    *) profile_error "Select one machine profile, optionally followed by skip-ssh or apply-ssh." ;;
+  esac
+}
+
+is_wsl() {
+  [[ "$(uname -s)" = Linux ]] || return 1
+  [[ -n "${WSL_DISTRO_NAME:-}" || -n "${WSL_INTEROP:-}" ]] ||
+    grep -Eiq 'microsoft|wsl' <<< "$(uname -r)"
+}
+
+choose_ssh_mode() {
+  local mode="${DOTFILES_SSH:-}" non_interactive=false arg answer
+  if [[ -z "$mode" ]] && is_wsl; then
+    mode=skip
+    for arg in "$@"; do
+      case "$arg" in
+        -n|--dry-run|-y|--yes|-h|--help) non_interactive=true ;;
+      esac
+    done
+    if [[ -t 0 ]] && ! "$non_interactive"; then
+      printf '%s' 'WSL detected. Skip managing ~/.ssh? (recommended if shared with Windows) [Y/n]: ' >&2
+      IFS= read -r answer || profile_error "SSH selection cancelled."
+      case "$answer" in
+        ""|[Yy]|[Yy][Ee][Ss]) ;;
+        [Nn]|[Nn][Oo]) mode=apply ;;
+        *) profile_error "Answer yes or no." ;;
+      esac
+    fi
+  fi
+  case "$mode" in
+    skip) printf '%s\n' 'Leaving ~/.ssh untouched.' >&2 ;;
+    apply|"") ;;
+    *) profile_error "DOTFILES_SSH must be skip or apply." ;;
+  esac
+  printf '%s\n' "$mode"
+}
+
 check_sudo_local() {
   if [[ "$(uname -s)" = Darwin && -e /etc/pam.d/sudo_local && ! -L /etc/pam.d/sudo_local ]]; then
     profile_error "Inspect /etc/pam.d/sudo_local and move it to /etc/pam.d/sudo_local.before-nix-darwin before continuing; do not overwrite an existing backup."
@@ -37,17 +79,31 @@ choose_profile() {
   printf '%s\n' "$profile"
 }
 
+run_bootstrap() {
+  local mise_command="$1" repo_root="$2" profile="$3" ssh_mode="$4"
+  shift 4
+  # apply-ssh は設定を上書きせず、WSL で適用を選んだことだけを記録する
+  MISE_TRUSTED_CONFIG_PATHS="$repo_root" \
+    "$mise_command" -C "$repo_root" -E "$profile${ssh_mode:+,$ssh_mode-ssh}" bootstrap --save-env "$@"
+}
+
 bootstrap_main() {
-  local repo_root mise_command profile=""
+  local repo_root mise_command selection ssh_mode profile=""
   local script_path="${BASH_SOURCE[0]}"
   case "${1:-}" in
     --check)
-      validate_profile "${2:-${MISE_ENV:-}}"
+      selection="${2:-${MISE_ENV:-}}"
+      profile="$(profile_from_selection "$selection")"
+      if [[ "$selection" = "$profile" ]] && is_wsl; then
+        profile_error "WSL: Run bash scripts/bootstrap.sh $profile to choose whether to manage ~/.ssh."
+      fi
       check_sudo_local
       return
       ;;
     --help|-h)
-      printf '%s\n' "Usage: bash scripts/bootstrap.sh [souhait|work_a|work_p] [mise bootstrap options...]"
+      printf '%s\n' \
+        "Usage: bash scripts/bootstrap.sh [souhait|work_a|work_p] [mise bootstrap options...]" \
+        "Set DOTFILES_SSH=skip or DOTFILES_SSH=apply to choose without prompting."
       return
       ;;
     souhait|work_a|work_p)
@@ -62,8 +118,8 @@ bootstrap_main() {
   mise_command="${DOTFILES_MISE_BIN:-mise}"
   command -v "$mise_command" >/dev/null \
     || profile_error "Install a recent mise before bootstrapping."
-  MISE_TRUSTED_CONFIG_PATHS="$repo_root" \
-    "$mise_command" -C "$repo_root" -E "$profile" bootstrap --save-env "$@"
+  ssh_mode="$(choose_ssh_mode "$@")"
+  run_bootstrap "$mise_command" "$repo_root" "$profile" "$ssh_mode" "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then

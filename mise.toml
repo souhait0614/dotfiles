@@ -21,6 +21,7 @@ key_file = "~/.dotfiles-encrypt-key.txt"
 "~/.apm" = { source = "home/.apm", mode = "copy" }
 "~/.claude" = { source = "home/.claude", mode = "copy" }
 "~/.copilot" = { source = "home/.copilot", mode = "copy" }
+# SSH をスキップする場合は mise.skip-ssh.toml で以下の全項目を無効にする
 "~/.ssh" = { permissions = "0700" }
 "~/.ssh/config" = { source = "home/.ssh/config.tera", mode = "template", permissions = "0600" }
 "~/.ssh/conf.d" = { permissions = "0700" }
