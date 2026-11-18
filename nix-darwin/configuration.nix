@@ -34,7 +34,7 @@ assert lib.assertMsg (builtins.elem profile [ "souhait" "work_a" "work_p" ])
     user = primaryUser;
     onActivation = {
       autoUpdate = false;
-      cleanup = "none";
+      cleanup = if isCI then "none" else "check";
       upgrade = false;
     };
     taps = map (name: { inherit name; trusted = true; }) homebrewData.taps;

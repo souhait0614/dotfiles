@@ -105,6 +105,7 @@ bash scripts/migrate.sh
 - [nix-darwin/](./nix-darwin/): macOS のシステム設定・フォント・Homebrew パッケージ
   - [fonts.toml](./nix-darwin/fonts.toml): Nix の属性名で指定するフォント一覧。`.` 区切りの属性名にも対応
   - [homebrew.toml](./nix-darwin/homebrew.toml): Homebrew パッケージ一覧
+    - macOS では、一覧にない Homebrew パッケージを検出すると、削除せずに設定の適用を中止します。プリインストール済みのパッケージがある CI ランナーでは、このチェックを行いません。
 - [home/.apm/apm.yml](./home/.apm/apm.yml): エージェント用の skill 定義
 
 ## 開発メモ

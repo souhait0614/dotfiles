@@ -1,6 +1,6 @@
-taps = ["artginzburg/tap", "li-na/zed-i18n", "phibrowser/tap"]
+taps = ["abue-ammar/tinycast", "artginzburg/tap", "li-na/zed-i18n", "phibrowser/tap"]
 
-brews = ["mas", "mole", "openssl@3"]
+brews = ["curl", "ffmpeg", "git", "gnupg", "mas", "mole", "nano", "openssl@3"]
 
 casks = [
   "android-platform-tools",
@@ -13,6 +13,7 @@ casks = [
   "inkscape",
   "karabiner-elements",
   "keyboardcleantool",
+  "opencode-desktop",
   "openmtp",
   "orbstack",
   "tailscale-app",
