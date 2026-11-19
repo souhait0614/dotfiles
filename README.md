@@ -20,7 +20,12 @@ Apple Silicon Mac と、arm64 または x86_64 の Linux（WSL を含む）に�
 
 mise 2026.11.8 以降と Zsh・Bash・curl・Git を用意し、ログインシェルを Zsh に設定します。復号鍵はあらかじめ `~/.dotfiles-encrypt-key.txt` に配置してください。macOS では Command Line Tools（`xcode-select --install`）も必要です。
 
+このリポジトリを `~/.dotfiles` にクローンし、移動してから以降のコマンドを実行します。`~/.dotfiles` は `mise dotfiles add` が既定で追加先に使うディレクトリです。
+
 ```sh
+git clone https://github.com/souhait0614/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
 # souhait・work_a・work_p から対話で選択して適用
 bash scripts/bootstrap.sh
 
@@ -31,15 +36,15 @@ bash scripts/bootstrap.sh souhait
 mise bootstrap
 ```
 
-配置したファイルの一部はこのリポジトリへのシンボリックリンクになるため、セットアップ後もリポジトリを残してください。
+配置したファイルの一部はこのリポジトリへのシンボリックリンクになるため、セットアップ後もリポジトリを移動・削除しないでください。
 
 macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_SOCK` は Zsh の起動時に設定されます。
 
 ### WSL
 
-シンボリックリンクやファイル権限を扱うため、ホームディレクトリとチェックアウトは `/mnt/c` などの Windows ドライブではなく、WSL の Linux ファイルシステム上に置いてください。mise・Zsh・Bash・curl・Git は WSL 内に用意し、ログインシェルも WSL 内の Zsh に設定してください。
+シンボリックリンクやファイル権限を扱うため、ホームディレクトリとリポジトリは `/mnt/c` などの Windows ドライブではなく WSL の Linux ファイルシステム上に置いてください。mise・Zsh・Bash・curl・Git は WSL 内に用意し、ログインシェルも WSL 内の Zsh に設定してください。
 
-`bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` は WSL では `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
+WSL では `bash scripts/bootstrap.sh souhait` と `bash scripts/migrate.sh` が `~/.ssh` の管理をスキップするか確認します。Windows と `~/.ssh` を共有しているなら、そのまま Enter を押してください。スキップ時は SSH 設定の配置や権限変更だけでなく、移行時の SSH 設定の退避も行いません。Windows 側の SSH エージェントの設定は変更しません。
 
 `--yes`、`--dry-run`、端末入力のない実行では、指定がなければ SSH をスキップします。WSL 専用の `~/.ssh` に適用する場合は `DOTFILES_SSH=apply bash scripts/bootstrap.sh souhait --yes` と指定できます。`DOTFILES_SSH=skip` を指定すると、対話なしで SSH をスキップします。どちらの指定も移行スクリプトで使えます。
 
@@ -84,7 +89,7 @@ mise run karabiner
 
 ### 旧環境（chezmoi + Nix）からの移行
 
-旧 chezmoi のソースディレクトリの外にこのリポジトリをクローンして実行します。旧設定を `~/.local/state/dotfiles-migration/backup.*` に退避したあと、nix-darwin と Nix/Lix をアンインストールして新環境をセットアップします。
+[使い方](#使い方) の手順でクローンしたあと、bootstrap の代わりに移行スクリプトを実行します。ただし、`~/.dotfiles` が旧 chezmoi のソースディレクトリ自体、またはその配下にある場合は、旧ソースディレクトリの外にクローンしてください。移行スクリプトは旧設定を `~/.local/state/dotfiles-migration/backup.*` に退避したあと、nix-darwin と Nix/Lix をアンインストールして新環境をセットアップします。
 
 Nix/Lix の削除はシステム全体と他のユーザーに影響します。Nix ストアはバックアップされません。削除に使うインストーラーと記録は `~/.local/state/dotfiles-migration/uninstaller.*` に保存されます。中断後に未マウントの Nix Store ボリュームが残っている場合は、旧環境の削除を完了してから再実行してください。
 
@@ -105,10 +110,17 @@ bash scripts/migrate.sh
 - [nix-darwin/](./nix-darwin/): macOS のシステム設定・フォント・Homebrew パッケージ
   - [fonts.toml](./nix-darwin/fonts.toml): Nix の属性名で指定するフォント一覧。`.` 区切りの属性名にも対応
   - [homebrew.toml](./nix-darwin/homebrew.toml): Homebrew パッケージ一覧
-    - macOS では、一覧にない Homebrew パッケージを検出すると、削除せずに設定の適用を中止します。プリインストール済みのパッケージがある CI ランナーでは、このチェックを行いません。
+    - macOS では一覧にない Homebrew パッケージを検出すると、削除せずに設定の適用を中止します。プリインストール済みのパッケージがある CI ランナーでは、このチェックを行いません。
 - [home/.apm/apm.yml](./home/.apm/apm.yml): エージェント用の skill 定義
 
 ## 開発メモ
+
+新しい dotfile を追加する場合は、リポジトリルートで `--path` に書き込み先の設定ファイルを、`--source` に `home/` 配下の配置元を指定します。指定しない場合、設定はグローバルに書き込まれ、配置元は既定の `~/.dotfiles` 直下に作られます。
+
+```sh
+# 例: ~/.editorconfig を追加する差分を確認
+mise dotfiles add --path mise.toml --source home/.editorconfig --dry-run ~/.editorconfig
+```
 
 コミットメッセージの検査（commitlint）とフォーマット（oxfmt）には Node.js と pnpm を使います。依存関係を導入すると Lefthook の Git フックが有効になります。
 
