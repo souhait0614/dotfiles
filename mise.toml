@@ -30,6 +30,7 @@ key_file = "~/.dotfiles-encrypt-key.txt"
 
 [bootstrap.hooks]
 pre-dotfiles = 'bash scripts/bootstrap.sh --check {{ mise_env | default(value=[]) | join(sep=",") | quote }}'
+post-dotfiles = 'bash scripts/hooks/post-dotfiles.sh'
 
 # ZDOTDIR を ~/.config/zsh にしているため、有効化は Zsh の設定ファイル側で行う
 [bootstrap.mise_shell_activate]

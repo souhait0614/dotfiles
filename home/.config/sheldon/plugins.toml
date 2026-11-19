@@ -43,3 +43,7 @@ inline = 'zsh-defer eval "$(zoxide init zsh --cmd cd)"'
 
 [plugins.local-plugins]
 local = "~/.config/zsh/plugins/"
+
+[plugins.site-functions]
+local = "~/.config/zsh/site-functions/"
+use = ["_*"]

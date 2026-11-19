@@ -38,6 +38,8 @@ mise bootstrap
 
 配置したファイルの一部はこのリポジトリへのシンボリックリンクになるため、セットアップ後もリポジトリを移動・削除しないでください。
 
+bootstrap は mise の Zsh 補完もインストールし、Zsh 起動時に読み込めるよう設定します。
+
 macOS では Bitwarden の SSH エージェントを使用します。`SSH_AUTH_SOCK` は Zsh の起動時に設定されます。
 
 ### WSL
