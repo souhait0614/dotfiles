@@ -40,7 +40,12 @@ lix_version = "{{ read_file(path='nix-darwin/lix-version') | trim }}"
 
 [tasks.bootstrap]
 description = "macOS 設定・シェルプラグイン・agent skills のセットアップ"
-run = ["bash scripts/setup-nix-darwin.sh", { task = "karabiner" }, "sheldon lock", "apm install -g"]
+run = [
+  "bash scripts/setup-nix-darwin.sh",
+  { task = "karabiner" },
+  "sheldon lock",
+  "apm update -g -y",
+]
 interactive = true
 env = { DOTFILES_LIX_VERSION = "{{ vars.lix_version }}" }
 
