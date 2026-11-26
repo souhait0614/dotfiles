@@ -16,7 +16,7 @@ lazygit = "0.66.3"
 ripgrep = "15.2.0"
 sheldon = "0.8.5"
 tokei = { version = "15.0.0", channel = "conda-forge" }
-uv = "0.12.10"
+uv = "0.13.10"
 zoxide = "0.10.0"
 
 [shell_alias]
