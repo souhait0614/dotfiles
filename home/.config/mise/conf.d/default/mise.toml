@@ -6,7 +6,7 @@ tokei = "conda:tokei"
 
 [tools]
 # グローバルの Python と分離するため apm 専用のバージョンを指定する
-apm = { version = "0.36.0", python = "3.15.2" }
+apm = { version = "0.39.0", python = "3.15.2" }
 bat = "0.26.1"
 eza = "0.23.5"
 fastfetch = "2.71.0"
